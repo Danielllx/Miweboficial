@@ -1,0 +1,408 @@
+<html lang="es">
+ <head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>
+   Nuestros Productos
+  </title>
+  
+  <link
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+   rel="stylesheet"
+  />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Orbitron&amp;family=Poppins:wght@400;600&amp;display=swap"
+   rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css">
+ </head>
+ <body class="min-h-screen flex flex-col items-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-40">
+  <!-- Accessibility Buttons -->
+  <div id="accessibility-buttons" aria-label="Botones de accesibilidad">
+   <button class="access-btn" id="btn-increase-font" aria-label="Aumentar tamaño de fuente" title="Aumentar fuente">A+</button>
+   <button class="access-btn" id="btn-decrease-font" aria-label="Disminuir tamaño de fuente" title="Disminuir fuente">A-</button>
+   <button class="access-btn" id="btn-toggle-contrast" aria-label="Alternar alto contraste" title="Alto contraste">
+    <i class="fas fa-adjust"></i>
+   </button>
+  </div>
+  <!-- Loader -->
+  <div aria-busy="true" aria-live="assertive" id="loader" role="alert">
+   <div aria-hidden="true" class="loader-bar-container">
+    <div class="loader-bar"></div>
+   </div>
+  </div>
+  <!-- Main content -->
+  <div class="hidden w-full flex flex-col items-center" id="main-content">
+   <!-- Top bar with daniii.org, menu and contact button -->
+   <header class="w-full max-w-7xl mt-3 flex justify-between items-center px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-0">
+    <span class="text-white font-semibold text-lg tracking-wide select-none">
+     daniii.org
+    </span>
+    <nav class="hidden md:flex space-x-6">
+     <a class="menu-link subtle-glow-text" href="#web">Web</a>
+     <a class="menu-link subtle-glow-text" href="#hosting">Hosting</a>
+     <a class="menu-link subtle-glow-text" href="#bundles">Paquetes</a>
+     <a class="menu-link subtle-glow-text" href="#accessories">Accesorios</a>
+     <a class="menu-link subtle-glow-text" href="#information">Información</a>
+    </nav>
+    <a href="https://wa.me/33745474053" target="_blank" rel="noopener noreferrer" class="bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold py-2 px-5 rounded-full transition-colors duration-300 flex items-center space-x-2">
+     <i class="fab fa-whatsapp"></i>
+     <span>Contacto</span>
+    </a>
+    <!-- Mobile menu button -->
+    <button aria-label="Abrir menú" class="md:hidden text-white text-2xl focus:outline-none" id="mobile-menu-button">
+     <i class="fas fa-bars"></i>
+    </button>
+   </header>
+   <!-- Mobile menu -->
+   <nav class="hidden flex-col space-y-3 bg-[#2a1a6a] rounded-lg p-4 mt-3 w-full max-w-7xl md:hidden px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-0" id="mobile-menu">
+    <a class="menu-link subtle-glow-text block" href="#web">Web</a>
+    <a class="menu-link subtle-glow-text block" href="#hosting">Hosting</a>
+    <a class="menu-link subtle-glow-text block" href="#bundles">Paquetes</a>
+    <a class="menu-link subtle-glow-text block" href="#accessories">Accesorios</a>
+    <a class="menu-link subtle-glow-text block" href="#information">Información</a>
+   </nav>
+   <!-- NUESTROS PRODUCTOS heading -->
+   <h1 class="orbitron text-white text-3xl sm:text-4xl md:text-5xl mt-6 mb-8 subtle-glow-text tracking-widest select-none max-w-7xl w-full px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-0">
+    NUESTROS PRODUCTOS
+   </h1>
+   <!-- New WEB card above hosting -->
+   <div id="web" class="w-full max-w-7xl grid gap-8 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-0 mb-10" style="grid-template-columns: repeat(auto-fit,minmax(280px,1fr));">
+    <div class="relative rounded-3xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-300">
+     <img alt="Imagen generada por IA de diseño web moderno y minimalista" class="card-img w-full h-auto object-cover rounded-3xl" height="250" src="https://storage.googleapis.com/a1aa/image/cc335e8d-a46a-4b67-ff34-5234c107ba85.jpg" width="400" />
+     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-3xl flex flex-col justify-end p-6">
+      <h2 class="text-white text-2xl font-semibold tracking-widest mb-3 subtle-glow-text select-none">
+       WEB
+      </h2>
+      <button
+       class="bg-purple-600 hover:bg-purple-700 text-white text-base font-semibold py-3 px-7 rounded-full w-max transition-transform duration-200"
+       id="btn-web"
+       type="button"
+      >
+       MÁS INFORMACIÓN
+      </button>
+     </div>
+    </div>
+    <div class="relative rounded-3xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-300">
+     <img alt="Teclado iluminado con luces coloridas, imagen generada por IA" class="card-img w-full h-auto object-cover rounded-3xl" height="250" src="https://storage.googleapis.com/a1aa/image/0c281ea5-ff0f-4474-240f-dd22175391fe.jpg" width="400" />
+     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-3xl flex flex-col justify-end p-6">
+      <h2 class="text-white text-2xl font-semibold tracking-widest mb-3 subtle-glow-text select-none">
+       HOSTING
+      </h2>
+      <button
+       class="bg-purple-600 hover:bg-purple-700 text-white text-base font-semibold py-3 px-7 rounded-full w-max transition-transform duration-200"
+       id="btn-hosting"
+       type="button"
+      >
+       MÁS INFORMACIÓN
+      </button>
+     </div>
+    </div>
+    <div
+     class="relative rounded-3xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-300"
+     id="accessories"
+    >
+     <img alt="Logo de Linux con fondo azul, imagen generada por IA" class="card-img w-full h-auto object-cover rounded-3xl" height="250" src="https://storage.googleapis.com/a1aa/image/1024e824-9fcc-49fd-003d-0d1128a91853.jpg" width="400" />
+     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-3xl flex flex-col justify-end p-6">
+      <h2 class="text-white text-2xl font-semibold tracking-widest mb-3 subtle-glow-text select-none">
+       Aprende sobre Linux
+      </h2>
+      <button
+       class="bg-purple-600 hover:bg-purple-700 text-white text-base font-semibold py-3 px-7 rounded-full w-max transition-transform duration-200"
+       id="btn-accessories"
+       type="button"
+      >
+       MÁS INFORMACIÓN
+      </button>
+     </div>
+    </div>
+    <div
+     class="relative rounded-3xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-300"
+     id="investment"
+    >
+     <img alt="Ilustración de inversión inteligente, imagen generada por IA" class="card-img w-full h-auto object-cover rounded-3xl" height="250" src="https://storage.googleapis.com/a1aa/image/950a3535-f88e-49cb-4702-cfa6d74e9775.jpg" width="400" />
+     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-3xl flex flex-col justify-end p-6">
+      <h2 class="text-white text-2xl font-semibold tracking-widest mb-3 subtle-glow-text select-none">
+       Inversión Inteligente
+      </h2>
+      <button
+       class="bg-purple-600 hover:bg-purple-700 text-white text-base font-semibold py-3 px-7 rounded-full w-max transition-transform duration-200"
+       id="btn-investment"
+       type="button"
+      >
+       MÁS INFORMACIÓN
+      </button>
+     </div>
+    </div>
+    <div
+     class="flex flex-col justify-end p-6 rounded-3xl bg-gradient-to-t from-black/70 to-transparent cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-300"
+    >
+     <h2 class="text-white text-2xl font-semibold tracking-widest mb-3 subtle-glow-text select-none">
+      Soporte Técnico
+     </h2>
+     <button class="btn-minimal" id="btn-support" type="button">
+      MÁS INFORMACIÓN
+     </button>
+    </div>
+   </div>
+   <!-- HOSTING section -->
+   <section
+    class="w-full max-w-7xl mt-12 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-0"
+   >
+    <h2
+     class="orbitron text-white text-3xl mb-6 subtle-glow-text tracking-widest select-none"
+    >
+     HOSTING
+    </h2>
+    <!-- Description text removed -->
+    <p
+     class="text-white text-base mb-3 leading-relaxed select-none max-w-4xl"
+    ></p>
+    <!-- Compare plans button -->
+    <button
+     class="bg-purple-600 hover:bg-purple-700 text-white text-base font-semibold py-3 px-8 rounded-full w-full max-w-xs transition-transform duration-200"
+     type="button"
+    >
+     COMPARAR PLANES
+    </button>
+   </section>
+   <!-- BUNDLES section -->
+   <section
+    class="w-full max-w-7xl mt-12 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-0"
+   >
+    <h2
+     class="orbitron text-white text-3xl mb-6 subtle-glow-text tracking-widest select-none"
+    >
+     PAQUETES
+    </h2>
+    <!-- Bundle items grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+     <!-- Starter Package -->
+     <div>
+      <img
+       alt="Joven mujer sosteniendo teléfono mirando de lado"
+       class="rounded-3xl w-full mb-3 card-img"
+       height="250"
+       src="https://storage.googleapis.com/a1aa/image/22626e9a-4362-4b9d-efa4-93d87994c66b.jpg"
+       width="400"
+      />
+      <h3 class="text-white text-xl font-semibold mb-1 select-none">
+       Paquete Inicial
+      </h3>
+      <p class="text-purple-400 text-base select-none price">$000</p>
+      <ul class="features-list">
+       <li>Managed hosting for WordPress</li>
+       <li>Free 7-day Horizons trial</li>
+       <li>25 GB SSD storage</li>
+       <li>2 mailboxes per website - free for 1 year</li>
+       <li>Unlimited free SSL</li>
+       <li>Weekly backups</li>
+       <li>Starter WooCommerce</li>
+      </ul>
+     </div>
+     <!-- Family Package -->
+     <div>
+      <img
+       alt="Dos mujeres sonriendo y sosteniendo teléfono"
+       class="rounded-3xl w-full mb-3 card-img"
+       height="250"
+       src="https://storage.googleapis.com/a1aa/image/76a0a3cc-13a9-4376-9460-958190dd4077.jpg"
+       width="400"
+      />
+      <h3 class="text-white text-xl font-semibold mb-1 select-none">
+       Paquete Familiar
+      </h3>
+      <p class="text-purple-400 text-base select-none price">$000</p>
+      <ul class="features-list">
+       <li>Free domain (US$ 9.99 value)</li>
+       <li>Free automatic website migration</li>
+       <li>5 mailboxes per website - free for 1 year</li>
+       <li>Unlimited free SSL</li>
+       <li>Daily backups (US$ 25.08 value)</li>
+       <li>Basic WooCommerce</li>
+       <li>Free CDN</li>
+      </ul>
+     </div>
+    </div>
+   </section>
+   <!-- ACCESSORIES section -->
+   <section
+    class="w-full max-w-7xl mt-12 mb-16 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-0"
+    id="accessories-section"
+   >
+    <h2
+     class="orbitron text-white text-3xl mb-6 subtle-glow-text tracking-widest select-none"
+    >
+     ACCESORIOS
+    </h2>
+    <!-- Accessories grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
+     <div>
+      <img
+       alt="Logo de Linux con fondo azul, imagen generada por IA"
+       class="rounded-3xl w-full mb-3 card-img"
+       height="250"
+       src="https://storage.googleapis.com/a1aa/image/1024e824-9fcc-49fd-003d-0d1128a91853.jpg"
+       width="400"
+      />
+      <h3 class="text-white text-xl font-semibold mb-1 select-none">
+       Aprende sobre Linux
+      </h3>
+      <p class="text-purple-400 text-base select-none">
+       Descubre el sistema operativo robusto y seguro, ideal para servidores y
+       entornos profesionales.
+      </p>
+     </div>
+     <div>
+      <img
+       alt="Ilustración de inversión inteligente, imagen generada por IA"
+       class="rounded-3xl w-full mb-3 card-img"
+       height="250"
+       src="https://storage.googleapis.com/a1aa/image/950a3535-f88e-49cb-4702-cfa6d74e9775.jpg"
+       width="400"
+      />
+      <h3 class="text-white text-xl font-semibold mb-1 select-none">
+       Inversión Inteligente
+      </h3>
+      <p class="text-purple-400 text-base select-none">
+       Estrategias financieras para maximizar el rendimiento y minimizar
+       riesgos.
+      </p>
+     </div>
+    </div>
+   </section>
+   <!-- INFORMACIÓN section -->
+   <section
+    class="w-full max-w-7xl mt-12 mb-8 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-0"
+    id="information"
+   >
+    <h2
+     class="orbitron text-white text-3xl mb-6 subtle-glow-text tracking-widest select-none"
+    >
+     INFORMACIÓN
+    </h2>
+    <!-- Accessories grid -->
+    <div
+     class="space-y-8 text-white text-base leading-relaxed select-none max-w-4xl mx-auto"
+    >
+     <p>
+      Este espacio lo creé para personas como tú, que quieren aprender a manejar
+      mejor la tecnología, construir sus propios proyectos digitales o
+      simplemente entender cómo funciona todo eso del hosting, Linux o la
+      creación de páginas web.<br /><br />
+      Aquí encontrarás cursos claros, prácticos y sin rodeos, pensados para que
+      puedas empezar desde cero o mejorar lo que ya sabes.<br /><br />
+      También comparto contenido sobre inversiones y educación financiera,
+      porque sé lo importante que es aprender a cuidar el dinero. Eso sí,
+      quiero ser honesto contigo: toda inversión conlleva riesgos. No ofrezco
+      fórmulas mágicas ni promesas de ganancias rápidas. Mi idea es ayudarte a
+      entender cómo funciona este mundo para que tomes decisiones conscientes y
+      responsables.<br /><br />
+      Todo lo que enseño aquí está basado en lo que he ido aprendiendo en el
+      camino. Si quieres avanzar, aprender algo útil y tomar el control de tus
+      proyectos, estás en el lugar correcto.<br /><br />
+      Nos vemos dentro.
+     </p>
+     <div class="btn-group">
+      <a
+       href="https://wa.me/33745474053"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="btn-minimal"
+       >Contáctame</a
+      >
+      <a
+       href="http://www.daniii.org/"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="btn-minimal"
+       >Blog</a
+      >
+      <a href="mailto:soportegetorg2021@gmail.com" class="btn-minimal">Soporte</a>
+      <button class="btn-minimal" id="btn-newsletter" type="button">
+       Suscríbete
+      </button>
+     </div>
+    </div>
+   </section>
+   <!-- Responsibility text -->
+   <div
+    class="responsibility-text max-w-7xl w-full px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-0 text-center text-gray-400 text-sm select-none mt-4 mb-8"
+   >
+    No me hago responsable por cualquier uso de la información suministrada en
+    este sitio, todo está bajo vigilancia y orden.
+   </div>
+   <!-- Social media buttons and license -->
+   <footer
+    class="w-full max-w-7xl mb-12 flex flex-col items-center space-y-6 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-0"
+   >
+    <div class="flex space-x-8">
+     <a
+      aria-label="Telegram"
+      class="social-icon"
+      href="https://t.me/Daniellx777"
+      rel="noopener noreferrer"
+      target="_blank"
+      title="Telegram"
+     >
+      <i class="fab fa-telegram-plane"></i>
+     </a>
+     <a
+      aria-label="WhatsApp"
+      class="social-icon"
+      href="https://wa.me/33745474053"
+      rel="noopener noreferrer"
+      target="_blank"
+      title="WhatsApp"
+     >
+      <i class="fab fa-whatsapp"></i>
+     </a>
+     <a
+      aria-label="Facebook"
+      class="social-icon"
+      href="https://www.facebook.com/Daniel.Camacho20200"
+      rel="noopener noreferrer"
+      target="_blank"
+      title="Facebook"
+     >
+      <i class="fab fa-facebook-f"></i>
+     </a>
+    </div>
+    <p class="text-purple-400 text-sm select-none">© Daniel 2021</p>
+   </footer>
+  </div>
+  <!-- Modal -->
+  <div
+   aria-describedby="modal-desc"
+   aria-labelledby="modal-title"
+   aria-modal="true"
+   class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50"
+   id="modal"
+   role="dialog"
+  >
+   <div
+    class="bg-[#2a1a6a] rounded-3xl max-w-lg w-full p-6 relative shadow-lg"
+   >
+    <button
+     aria-label="Cerrar modal"
+     class="absolute top-4 right-4 text-white text-3xl hover:text-purple-400 focus:outline-none cursor-pointer"
+     id="modal-close"
+     type="button"
+    >
+     &times;
+    </button>
+    <h3 class="text-white text-2xl font-semibold mb-4 orbitron" id="modal-title">
+     Más Información
+    </h3>
+    <div
+     class="text-white text-base space-y-4 max-h-96 overflow-y-auto"
+     id="modal-desc"
+    >
+     <!-- Content will be injected here -->
+    </div>
+   </div>
+  </div>
+  
+   <script src="script.js"></script>
+</body>
+</html>
