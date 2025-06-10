@@ -802,6 +802,60 @@
    btnToggleContrast?.addEventListener("click", () => {
     document.body.classList.toggle("high-contrast");
    });
+  </script><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Web con Firebase</title>
+
+  <!-- Scripts de Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js"></script>
+</head>
+<body>
+  <h1>Formulario simple con Firebase</h1>
+  
+  <input type="text" id="nombre" placeholder="Tu nombre aquí">
+  <button onclick="guardarDatos()">Guardar</button>
+
+  <script>
+    // Configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCTa_tWYXZHUWtEuPa4F11wzHQ9MuBu8iU",
+      authDomain: "miweb-7522e.firebaseapp.com",
+      projectId: "miweb-7522e",
+      storageBucket: "miweb-7522e.firebasestorage.app",
+      messagingSenderId: "1085379663104",
+      appId: "1:1085379663104:web:46faa67189689fb2a84fe5",
+      measurementId: "G-KEFZR0DRWM"
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Función para guardar datos
+    function guardarDatos() {
+      const nombre = document.getElementById("nombre").value;
+
+      if (nombre.trim() === "") {
+        alert("Por favor, escribe un nombre.");
+        return;
+      }
+
+      db.collection("usuarios").add({
+        nombre: nombre,
+        fecha: new Date()
+      })
+      .then(() => {
+        alert("Guardado correctamente en Firebase.");
+        document.getElementById("nombre").value = "";
+      })
+      .catch((error) => {
+        alert("Error al guardar: " + error.message);
+      });
+    }
   </script>
  </body>
 </html>
