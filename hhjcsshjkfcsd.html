@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniii - Soluciones Digitales Profesionales</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 0%, rgba(131, 56, 236, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 0, 110, 0.1) 0%, transparent 50%);
+        }
+
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        /* Disable float on touch devices and small screens to avoid layout glitches */
+        @media (hover: none), (max-width: 768px) {
+            .float-animation {
+                animation: none !important;
+            }
+        }
+
+        /* Accessibility buttons removed per request */
+
+        .image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        .image-container img {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .feature-number {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Project numbering style (like feature-number but smaller) */
+        .project-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            min-width: 4.5rem;
+            text-align: left;
+        }
+
+        .project-item {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        /* Animate the feature-number when the project item becomes visible
+           NOTE: separate 'opacity' animation from 'move' to avoid transform conflicts
+           with floating/parallax effects. */
+        .project-item .feature-number {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .project-item.animate-move .feature-number {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animation helper classes */
+        .pre-animate {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* For image containers avoid the initial translate so float animation starts smoothly */
+        .image-container.pre-animate {
+            transform: none;
+            opacity: 0;
+        }
+
+        /* animate-in drives opacity only to avoid clobbering transform used by
+           float-animation or the hero parallax. animate-move handles the translateY. */
+        .animate-in {
+            opacity: 1 !important;
+            transition: opacity 0.6s ease;
+        }
+
+        .animate-move {
+            transform: translateY(0) !important;
+            transition: transform 0.6s ease;
+        }
+
+        @media (max-width: 768px) {
+            .project-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .project-number {
+                align-self: flex-start;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Accessibility controls removed -->
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-40 bg-black/50 backdrop-blur-xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold gradient-text">Daniii</div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#inicio" class="nav-link text-sm font-medium text-gray-300 hover:text-white">Inicio</a>
+                    <a href="#servicios" class="nav-link text-sm font-medium text-gray-300 hover:text-white">Servicios</a>
+                    <a href="#productos" class="nav-link text-sm font-medium text-gray-300 hover:text-white">Productos</a>
+                    <a href="#contacto" class="nav-link text-sm font-medium text-gray-300 hover:text-white">Contacto</a>
+                    <button class="btn-primary px-6 py-2.5 rounded-full text-sm font-semibold text-white">
+                        Comenzar
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-white">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 bottom-0 w-full max-w-sm bg-black/95 backdrop-blur-xl z-50 p-8">
+        <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 text-white">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+        <div class="flex flex-col gap-6 mt-16">
+            <a href="#inicio" onclick="toggleMobileMenu()" class="text-2xl font-medium text-white hover:text-gray-300">Inicio</a>
+            <a href="#servicios" onclick="toggleMobileMenu()" class="text-2xl font-medium text-white hover:text-gray-300">Servicios</a>
+            <a href="#productos" onclick="toggleMobileMenu()" class="text-2xl font-medium text-white hover:text-gray-300">Productos</a>
+            <a href="#contacto" onclick="toggleMobileMenu()" class="text-2xl font-medium text-white hover:text-gray-300">Contacto</a>
+            <button class="btn-primary px-8 py-4 rounded-full text-lg font-semibold text-white mt-4">
+                Comenzar
+            </button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center hero-gradient grid-pattern pt-20">
+        <div class="max-w-7xl mx-auto px-6 py-20 text-center">
+            <div class="inline-block mb-6 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-gray-300">
+                ✨ Soluciones digitales de próxima generación
+            </div>
+            <h1 class="section-title gradient-text mb-6 text-balance">
+                Transformamos ideas en experiencias digitales excepcionales
+            </h1>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-12 text-pretty">
+                Creamos sitios web, aplicaciones y soluciones de hosting que impulsan tu negocio hacia el futuro digital
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button class="btn-primary px-8 py-4 rounded-full text-base font-semibold text-white">
+                    Explorar servicios
+                </button>
+                <button class="btn-secondary px-8 py-4 rounded-full text-base font-semibold text-white">
+                    Ver proyectos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicios" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="section-title gradient-text mb-6">Nuestros servicios</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Soluciones integrales para llevar tu presencia digital al siguiente nivel
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="card rounded-3xl p-8">
+                    <div class="w-14 h-14 rounded-2xl accent-gradient flex items-center justify-center mb-6">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Desarrollo Web</h3>
+                    <p class="text-gray-400 mb-6">
+                        Sitios web modernos, responsivos y optimizados para SEO que convierten visitantes en clientes
+                    </p>
+                    <a href="#" class="text-sm font-semibold text-white inline-flex items-center gap-2 hover:gap-3 transition-all">
+                        Más información
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div class="card rounded-3xl p-8">
+                    <div class="w-14 h-14 rounded-2xl accent-gradient flex items-center justify-center mb-6">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <rect x="5" y="2" width="14" height="20" rx="2"/>
+                            <line x1="12" y1="18" x2="12" y2="18"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Aplicaciones Móviles</h3>
+                    <p class="text-gray-400 mb-6">
+                        Apps nativas y multiplataforma con experiencias de usuario excepcionales
+                    </p>
+                    <a href="#" class="text-sm font-semibold text-white inline-flex items-center gap-2 hover:gap-3 transition-all">
+                        Más información
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="card rounded-3xl p-8">
+                    <div class="w-14 h-14 rounded-2xl accent-gradient flex items-center justify-center mb-6">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2"/>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Hosting Premium</h3>
+                    <p class="text-gray-400 mb-6">
+                        Infraestructura confiable y escalable con soporte 24/7 para tu tranquilidad
+                    </p>
+                    <a href="#" class="text-sm font-semibold text-white inline-flex items-center gap-2 hover:gap-3 transition-all">
+                        Más información
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-32 px-6 bg-white/[0.02]">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center mb-32">
+                <div>
+                    <div class="feature-number mb-4">01</div>
+                    <h3 class="text-4xl font-semibold mb-6">Diseño centrado en el usuario</h3>
+                    <p class="text-xl text-gray-400 mb-8">
+                        Creamos experiencias intuitivas que tus usuarios amarán. Cada pixel está pensado para maximizar la conversión y el engagement.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300">Investigación de usuarios y análisis de comportamiento</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300">Prototipos interactivos y pruebas de usabilidad</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300">Diseño responsive para todos los dispositivos</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="image-container">
+                    <img src="/placeholder.svg?height=600&width=800" alt="Diseño web moderno" class="w-full h-auto rounded-2xl">
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="order-2 lg:order-1 image-container">
+                    <img src="/placeholder.svg?height=600&width=800" alt="Optimización de rendimiento" class="w-full h-auto rounded-2xl">
+                </div>
+                <div class="order-1 lg:order-2">
+                    <div class="feature-number mb-4">02</div>
+                    <h3 class="text-4xl font-semibold mb-6">Rendimiento excepcional</h3>
+                    <p class="text-xl text-gray-400 mb-8">
+                        Velocidad y optimización en cada línea de código. Tus usuarios merecen una experiencia rápida y fluida.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300">Optimización de carga y caché inteligente</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300">CDN global para tiempos de respuesta mínimos</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300">Monitoreo continuo y mejoras automáticas</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="productos" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="section-title gradient-text mb-6">Nuestros productos</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Paquetes diseñados para cada etapa de tu crecimiento digital
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="card rounded-3xl p-8 flex flex-col">
+                    <div class="mb-6">
+                        <h4 class="text-sm font-semibold text-gray-400 mb-2">STARTER</h4>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-5xl font-bold">$299</span>
+                            <span class="text-gray-400">/mes</span>
+                        </div>
+                        <p class="text-gray-400">Perfecto para emprendedores y pequeños negocios</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Sitio web de hasta 5 páginas</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Diseño responsive</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Hosting básico incluido</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Soporte por email</span>
+                        </li>
+                    </ul>
+                    <button class="btn-secondary w-full py-4 rounded-full font-semibold">
+                        Comenzar
+                    </button>
+                </div>
+
+                <!-- Product 2 - Featured -->
+                <div class="card rounded-3xl p-8 flex flex-col relative border-2 border-purple-500/50">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full accent-gradient text-sm font-semibold text-white">
+                        Más popular
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="text-sm font-semibold text-gray-400 mb-2">PROFESSIONAL</h4>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-5xl font-bold">$599</span>
+                            <span class="text-gray-400">/mes</span>
+                        </div>
+                        <p class="text-gray-400">Ideal para empresas en crecimiento</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Sitio web ilimitado</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Diseño personalizado</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Hosting premium + CDN</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">SEO avanzado</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Soporte prioritario 24/7</span>
+                        </li>
+                    </ul>
+                    <button class="btn-primary w-full py-4 rounded-full font-semibold">
+                        Comenzar
+                    </button>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="card rounded-3xl p-8 flex flex-col">
+                    <div class="mb-6">
+                        <h4 class="text-sm font-semibold text-gray-400 mb-2">ENTERPRISE</h4>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-5xl font-bold">Custom</span>
+                        </div>
+                        <p class="text-gray-400">Soluciones a medida para grandes empresas</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Todo lo de Professional</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Desarrollo personalizado</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Infraestructura dedicada</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Equipo dedicado</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">SLA garantizado</span>
+                        </li>
+                    </ul>
+                    <button class="btn-secondary w-full py-4 rounded-full font-semibold">
+                        Contactar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="py-32 px-6 bg-white/[0.02]">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="section-title gradient-text mb-6">Proyectos destacados</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Experiencias digitales que han transformado negocios
+                </p>
+            </div>
+
+            <div class="grid gap-12">
+                <!-- Project 01: text left, image right (like Features) -->
+                <div class="project-item grid lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <div class="feature-number mb-4">01</div>
+                        <h3 class="text-4xl font-semibold mb-6">Diseño centrado en el usuario</h3>
+                        <p class="text-xl text-gray-400 mb-8">Creamos experiencias intuitivas que tus usuarios amarán. Cada pixel está pensado para maximizar la conversión y el engagement.</p>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Investigación de usuarios y análisis de comportamiento</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Prototipos interactivos y pruebas de usabilidad</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Diseño responsive para todos los dispositivos</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="image-container">
+                        <img src="/placeholder.svg?height=600&width=800" alt="Proyecto 1" class="w-full h-96 object-cover rounded-2xl">
+                    </div>
+                </div>
+
+                <!-- Project 02: image left, text right (alternate like Features) -->
+                <div class="project-item grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="image-container order-1 lg:order-1">
+                        <img src="/placeholder.svg?height=600&width=800" alt="Proyecto 2" class="w-full h-96 object-cover rounded-2xl">
+                    </div>
+                    <div class="order-2 lg:order-2">
+                        <div class="feature-number mb-4">02</div>
+                        <h3 class="text-4xl font-semibold mb-6">Diseño centrado en el usuario</h3>
+                        <p class="text-xl text-gray-400 mb-8">Creamos experiencias intuitivas que tus usuarios amarán. Cada pixel está pensado para maximizar la conversión y el engagement.</p>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Investigación de usuarios y análisis de comportamiento</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Prototipos interactivos y pruebas de usabilidad</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Diseño responsive para todos los dispositivos</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-32 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="section-title gradient-text mb-6">¿Listo para comenzar?</h2>
+            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+                Conversemos sobre tu proyecto y cómo podemos ayudarte a alcanzar tus objetivos digitales
+            </p>
+            <div class="card rounded-3xl p-12">
+                <form class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <input type="text" placeholder="Nombre" class="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-white/20 focus:outline-none text-white placeholder-gray-500 transition-colors">
+                        <input type="email" placeholder="Email" class="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-white/20 focus:outline-none text-white placeholder-gray-500 transition-colors">
+                    </div>
+                    <input type="text" placeholder="Asunto" class="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-white/20 focus:outline-none text-white placeholder-gray-500 transition-colors">
+                    <textarea placeholder="Cuéntanos sobre tu proyecto" rows="6" class="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-white/20 focus:outline-none text-white placeholder-gray-500 transition-colors resize-none"></textarea>
+                    <button type="submit" class="btn-primary w-full py-4 rounded-full text-base font-semibold text-white">
+                        Enviar mensaje
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-12 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="text-2xl font-bold gradient-text mb-4">Daniii</div>
+                    <p class="text-gray-400 text-sm">
+                        Transformando ideas en experiencias digitales excepcionales
+                    </p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Servicios</h5>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Desarrollo Web</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Apps Móviles</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Hosting</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Consultoría</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Empresa</h5>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Sobre nosotros</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Proyectos</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contacto</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Síguenos</h5>
+                    <div class="flex gap-4">
+                        <!-- Facebook -->
+                        <a href="https://facebook.com/tu_usuario" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 6.626 5.373 12 12 12s12-5.374 12-12C24 5.373 18.627 0 12 0z" fill="#1877F2"/>
+                                <path d="M15.25 8.5h-1.25c-.25 0-.75.25-.75.75V10h2l-.25 2h-1.75v5h-2v-5H10.5v-2h1.25V9.25c0-1.5.75-2.75 2.75-2.75h1.75v2z" fill="#fff"/>
+                            </svg>
+                        </a>
+
+                        <!-- WhatsApp -->
+                        <a href="https://wa.me/559000000000" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M20.52 3.48A11.88 11.88 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.56 4.07 1.53 5.8L0 24l6.39-1.66A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.16-3.48-8.52z" fill="#25D366"/>
+                                <path d="M17.56 14.2c-.28-.14-1.66-.82-1.92-.92-.26-.09-.45-.14-.64.14-.19.28-.74.92-.91 1.11-.17.19-.34.21-.62.07-.28-.14-1.18-.43-2.25-1.39-.83-.74-1.39-1.66-1.56-1.94-.17-.28-.02-.43.13-.57.14-.14.31-.36.46-.54.15-.18.2-.31.3-.52.1-.21.05-.39-.03-.54-.08-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.48-.17 0-.36-.02-.55-.02-.19 0-.5.07-.77.36-.26.29-1 1-1 2.44s1.02 2.83 1.16 3.03c.14.2 2.01 3.06 4.87 4.29 1.36.58 1.96.63 2.67.53.43-.06 1.66-.68 1.9-1.33.24-.65.24-1.2.17-1.32-.07-.11-.26-.18-.54-.32z" fill="#fff"/>
+                            </svg>
+                        </a>
+
+                        <!-- Instagram -->
+                        <a href="https://instagram.com/tu_usuario" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#igGrad)" stroke-width="1.6" fill="url(#igGradBg)"/>
+                                <circle cx="12" cy="12" r="3.2" fill="#fff"/>
+                                <circle cx="17.5" cy="6.5" r="1" fill="#fff"/>
+                                <defs>
+                                    <linearGradient id="igGrad" x1="0" x2="1" y1="0" y2="1">
+                                        <stop offset="0%" stop-color="#feda75"/>
+                                        <stop offset="50%" stop-color="#d62976"/>
+                                        <stop offset="100%" stop-color="#8134af"/>
+                                    </linearGradient>
+                                    <linearGradient id="igGradBg" x1="0" x2="1" y1="0" y2="1">
+                                        <stop offset="0%" stop-color="#feda75" stop-opacity="0.9"/>
+                                        <stop offset="100%" stop-color="#8134af" stop-opacity="0.85"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </a>
+
+                        <!-- Telegram -->
+                        <a href="https://t.me/tu_usuario" target="_blank" rel="noopener noreferrer" aria-label="Telegram" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 6.626 5.373 12 12 12s12-5.374 12-12C24 5.373 18.627 0 12 0z" fill="#2AABEE"/>
+                                <path d="M18.7 7.3c-.2.9-1.1 4.2-1.6 6-.2.7-.6 1-1.2 1.1-.5.1-1-.2-1.6-.5-1.3-.7-2.7-1.5-4-2.2-1.3-.7-1.3-.6 0-1.2 1.3-.6 2.6-1.3 3.9-1.9 1.1-.5 2.1-.9 2.5-.9.2 0 .3.1.4.6.1.4.2.7.6 1.1z" fill="#fff"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+                <p>&copy; 2025 Daniii. Todos los derechos reservados.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-white transition-colors">Privacidad</a>
+                    <a href="#" class="hover:text-white transition-colors">Términos</a>
+                    <a href="#" class="hover:text-white transition-colors">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Accessibility controls removed (buttons + handlers) per user request
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+            
+            if (menu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Cerrar menú al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('mobileMenu');
+            const menuButton = document.querySelector('[onclick="toggleMobileMenu()"]');
+            
+            if (menu.classList.contains('active') && 
+                !menu.contains(e.target) && 
+                !menuButton.contains(e.target)) {
+                toggleMobileMenu();
+            }
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const target = document.querySelector(targetId);
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Cerrar menú móvil si está abierto
+                    const menu = document.getElementById('mobileMenu');
+                    if (menu.classList.contains('active')) {
+                        toggleMobileMenu();
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(button => {
+            if (!button.closest('form') && button.textContent.includes('Comenzar')) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const contactSection = document.querySelector('#contacto');
+                    if (contactSection) {
+                        const headerOffset = 80;
+                        const elementPosition = contactSection.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            } else if (button.textContent.includes('Explorar servicios')) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelector('#servicios').scrollIntoView({ behavior: 'smooth' });
+                });
+            } else if (button.textContent.includes('Ver proyectos')) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const gallerySection = document.querySelector('section:has(.image-container.group)');
+                    if (gallerySection) {
+                        gallerySection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            } else if (button.textContent.includes('Contactar')) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelector('#contacto').scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+        });
+
+                        // Firebase (Firestore) client-side + reCAPTCHA v3
+                        // He usado imports modulares desde el CDN. Tu firebaseConfig fue pegado arriba en el archivo.
+                        (function () {
+                                // Primero, insertar el script de reCAPTCHA (site key proporcionada por el usuario)
+                                const recaptchaSiteKey = '6LfadfkrAAAAAMzz_vpFFnyPA2JB1LNqVW0Uy3i2';
+                                const recaptchaScript = document.createElement('script');
+                                recaptchaScript.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`;
+                                recaptchaScript.async = true;
+                                recaptchaScript.defer = true;
+                                document.head.appendChild(recaptchaScript);
+
+                                // --- Helpers globales: toast + estilos + confetti loader + spinner ---
+                                (function setupUIHelpers() {
+                                    if (window._uiHelpersInstalled) return;
+
+                                    // Inject toast & spinner styles
+                                    const s = document.createElement('style');
+                                    s.textContent = '\n#global-toast-container{position:fixed;right:0;left:0;bottom:24px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:99999;pointer-events:none}\n.global-toast{pointer-events:auto;min-width:220px;max-width:420px;padding:12px 16px;border-radius:12px;color:#fff;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,0.5);opacity:0;transform:translateY(10px);transition:all .28s cubic-bezier(.2,.9,.3,1)}\n.global-toast.show{opacity:1;transform:translateY(0)}\n.global-toast.info{background:linear-gradient(90deg,#6b7280,#111827)}\n.global-toast.success{background:linear-gradient(90deg,#10b981,#059669)}\n.global-toast.error{background:linear-gradient(90deg,#ef4444,#b91c1c)}\n.btn-spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,0.25);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-right:8px}\n@keyframes spin{to{transform:rotate(360deg)}}\n';
+                                    document.head.appendChild(s);
+
+                                    // Toast container
+                                    const container = document.createElement('div');
+                                    container.id = 'global-toast-container';
+                                    document.body.appendChild(container);
+
+                                    // showToast helper
+                                    window.showToast = function (message, type = 'info', ms = 3500) {
+                                        try {
+                                            const toast = document.createElement('div');
+                                            toast.className = 'global-toast ' + (type || 'info');
+                                            toast.innerHTML = String(message);
+                                            document.getElementById('global-toast-container').appendChild(toast);
+                                            // small delay to allow transition
+                                            requestAnimationFrame(() => toast.classList.add('show'));
+                                            setTimeout(() => {
+                                                toast.classList.remove('show');
+                                                setTimeout(() => toast.remove(), 300);
+                                            }, ms);
+                                            return toast;
+                                        } catch (e) { console.warn('showToast failed', e); }
+                                    };
+
+                                    // Load canvas-confetti for celebratory effect
+                                    const confettiScript = document.createElement('script');
+                                    confettiScript.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
+                                    confettiScript.async = true;
+                                    confettiScript.onload = () => {
+                                        // window.confetti becomes available
+                                    };
+                                    document.head.appendChild(confettiScript);
+
+                                    window._uiHelpersInstalled = true;
+                                })();
+
+                                // Luego, el módulo que inicializa Firebase y usa grecaptcha antes de enviar
+                                const moduleScript = document.createElement('script');
+                                moduleScript.type = 'module';
+                                moduleScript.textContent = `
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCTa_tWYXZHUWtEuPa4F11wzHQ9MuBu8iU",
+            authDomain: "miweb-7522e.firebaseapp.com",
+            projectId: "miweb-7522e",
+            storageBucket: "miweb-7522e.firebasestorage.app",
+            messagingSenderId: "1085379663104",
+            appId: "1:1085379663104:web:46faa67189689fb2a84fe5",
+            measurementId: "G-KEFZR0DRWM"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const contactForm = document.querySelector('#contacto form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const nombre = contactForm.querySelector('input[placeholder="Nombre"]').value.trim();
+                const email = contactForm.querySelector('input[placeholder="Email"]').value.trim();
+                const asunto = contactForm.querySelector('input[placeholder="Asunto"]').value.trim();
+                const mensaje = contactForm.querySelector('textarea').value.trim();
+
+                if (!nombre || !email || !mensaje) {
+                    window.showToast('Por favor completa todos los campos', 'error');
+                    return;
+                }
+
+                const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    window.showToast('Por favor ingresa un email válido', 'error');
+                    return;
+                }
+
+                const submitButton = contactForm.querySelector('button[type="submit"]');
+                const originalHTML = submitButton.innerHTML;
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="btn-spinner"></span>Enviando...';
+
+                // Obtener token de reCAPTCHA (si está disponible). Si no, continuar sin token.
+                let recaptchaToken = null;
+                try {
+                    if (window.grecaptcha && typeof grecaptcha.execute === 'function') {
+                        await grecaptcha.ready();
+                        recaptchaToken = await grecaptcha.execute('${recaptchaSiteKey}', { action: 'submit' });
+                    }
+                } catch (err) {
+                    console.warn('reCAPTCHA error or not ready, proceeding without token', err);
+                }
+
+                try {
+                    const payload = {
+                        nombre,
+                        email,
+                        asunto: asunto || null,
+                        mensaje,
+                        created_at: serverTimestamp(),
+                        recaptchaToken: recaptchaToken || null
+                    };
+
+                    const docRef = await addDoc(collection(db, 'messages'), payload);
+
+                    // Success UI: toast, confetti, button check
+                    try {
+                        window.showToast('Mensaje enviado. ¡Gracias!', 'success');
+                        if (window.confetti) {
+                            window.confetti({ particleCount: 60, spread: 120 });
+                        }
+                    } catch (e) { console.warn(e); }
+
+                    submitButton.innerHTML = '\u2713 Enviado';
+                    setTimeout(() => {
+                        submitButton.innerHTML = originalHTML;
+                        submitButton.disabled = false;
+                    }, 2200);
+
+                    contactForm.reset();
+                } catch (err) {
+                    console.error('Error guardando en Firestore', err);
+                    window.showToast('Error enviando mensaje. Revisa la consola.', 'error');
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalHTML;
+                }
+            });
+        }
+        `;
+                                document.body.appendChild(moduleScript);
+                        })();
+
+        let lastScrollY = window.pageYOffset;
+        const nav = document.querySelector('nav');
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.pageYOffset;
+
+            // Ocultar/mostrar navegación al hacer scroll
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                nav.style.transform = 'translateY(-100%)';
+            } else {
+                nav.style.transform = 'translateY(0)';
+            }
+
+            lastScrollY = currentScrollY;
+
+            // Efecto parallax en hero: solo en pantallas grandes y no táctiles
+            const hero = document.querySelector('#inicio');
+            const touchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+            if (hero && !touchDevice && window.innerWidth > 768 && currentScrollY < window.innerHeight) {
+                hero.style.transform = `translateY(${currentScrollY * 0.5}px)`;
+                hero.style.opacity = 1 - (currentScrollY / window.innerHeight) * 0.5;
+            } else if (hero) {
+                // Reset transforms on touch/small devices to avoid visual glitches
+                hero.style.transform = '';
+                hero.style.opacity = '';
+            }
+        });
+
+        const observerOptions = {
+            threshold: 0.12,
+            rootMargin: '0px 0px -80px 0px'
+        };
+
+
+        const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        // Always fade in (opacity) but only apply move when appropriate
+                        entry.target.classList.add('animate-in');
+                        entry.target.classList.remove('pre-animate');
+
+                        // If the element is an image container and device is non-touch/large, add float
+                        if (entry.target.classList.contains('image-container')) {
+                            if (!isTouch && window.innerWidth > 768) {
+                                entry.target.classList.add('float-animation');
+                            }
+                        } else {
+                            // For typical blocks (cards, project items, etc.) add move transform
+                            entry.target.classList.add('animate-move');
+                        }
+                    }, index * 90);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe cards, image containers, section titles and project items so they animate when visible
+        document.querySelectorAll('.card, .image-container, .section-title, .project-item').forEach(el => {
+            // add pre-animate class so CSS handles the initial state
+            el.classList.add('pre-animate');
+            observer.observe(el);
+        });
+
+        const animateNumbers = () => {
+            const numbers = document.querySelectorAll('.feature-number');
+            numbers.forEach(num => {
+                const target = parseInt(num.textContent);
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        num.textContent = target.toString().padStart(2, '0');
+                        clearInterval(timer);
+                    } else {
+                        num.textContent = Math.floor(current).toString().padStart(2, '0');
+                    }
+                }, 30);
+            });
+        };
+
+        // Observar números para animarlos cuando sean visibles
+        const numberObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateNumbers();
+                    numberObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.feature-number').forEach(num => {
+            numberObserver.observe(num);
+        });
+
+        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(button => {
+            button.addEventListener('mouseenter', function(e) {
+                this.style.transform = 'scale(1.05)';
+            });
+            
+            button.addEventListener('mouseleave', function(e) {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        const progressBar = document.createElement('div');
+        progressBar.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.1s ease;
+        `;
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.pageYOffset / windowHeight) * 100;
+            progressBar.style.width = scrolled + '%';
+        });
+
+        console.log('[v0] Sitio web Daniii cargado con todas las funcionalidades activas');
+    </script>
+</body>
+</html>
