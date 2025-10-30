@@ -1,0 +1,2132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniii DigitalHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 0%, rgba(131, 56, 236, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 0, 110, 0.1) 0%, transparent 50%);
+        }
+
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        /* Disable float on touch devices and small screens to avoid layout glitches */
+        @media (hover: none), (max-width: 768px) {
+            .float-animation {
+                animation: none !important;
+            }
+        }
+
+        /* Accessibility buttons removed per request */
+
+        .image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        .image-container img {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .feature-number {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Project numbering style (like feature-number but smaller) */
+        .project-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            min-width: 4.5rem;
+            text-align: left;
+        }
+
+        .project-item {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        /* Animate the feature-number when the project item becomes visible
+           NOTE: separate 'opacity' animation from 'move' to avoid transform conflicts
+           with floating/parallax effects. */
+        .project-item .feature-number {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .project-item.animate-move .feature-number {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animation helper classes */
+        .pre-animate {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* For image containers avoid the initial translate so float animation starts smoothly */
+        .image-container.pre-animate {
+            transform: none;
+            opacity: 0;
+        }
+
+        /* animate-in drives opacity only to avoid clobbering transform used by
+           float-animation or the hero parallax. animate-move handles the translateY. */
+        .animate-in {
+            opacity: 1 !important;
+            transition: opacity 0.6s ease;
+        }
+
+        .animate-move {
+            transform: translateY(0) !important;
+            transition: transform 0.6s ease;
+        }
+
+        @media (max-width: 768px) {
+            .project-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .project-number {
+                align-self: flex-start;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        /* Cart styles */
+        .cart-button {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: linear-gradient(135deg,#ff006e,#8338ec);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(131,56,236,0.25);
+            z-index: 99999;
+            cursor: pointer;
+            border: none;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #10b981;
+            color: #fff;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 0 6px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.35);
+        }
+
+        #cartSidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            width: 380px;
+            max-width: 92vw;
+            background: rgba(8,8,8,0.98);
+            backdrop-filter: blur(8px);
+            z-index: 99998;
+            transform: translateX(110%);
+            transition: transform 0.34s cubic-bezier(.2,.9,.3,1);
+            padding: 22px;
+            box-shadow: -30px 0 60px rgba(0,0,0,0.6);
+            border-left: 1px solid rgba(255,255,255,0.04);
+        }
+
+        #cartSidebar.open {
+            transform: translateX(0);
+        }
+
+        .cart-item { display:flex; gap:12px; align-items:center; margin-bottom:12px }
+        .cart-item .name { font-weight:600; color:#fff }
+        .cart-item .price { color:#9CA3AF; margin-left:auto }
+
+        .cart-total { display:flex; align-items:center; justify-content:space-between; margin-top:18px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.04) }
+
+        /* flying dot used for add-to-cart animation */
+        #flyElm {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999999;
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            background: linear-gradient(135deg,#ff006e,#8338ec);
+            transform: translate(-50%,-50%) scale(1);
+            will-change: transform, opacity;
+            display: none;
+        }
+
+        /* Projects alternate style (different look & checks) */
+        .projects-alt {
+            background: linear-gradient(180deg, rgba(6,6,10,0.6), rgba(15,12,22,0.6));
+        }
+
+        .projects-alt .feature-number {
+            background: linear-gradient(135deg, #06b6d4 0%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .projects-alt .check-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg,#06b6d4,#34d399);
+            box-shadow: 0 6px 18px rgba(6,182,212,0.08);
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .projects-alt .check-circle svg { width: 14px; height: 14px; }
+
+        /* Override accent for checks inside projects-alt so they use the new teal gradient */
+        .projects-alt .accent-gradient {
+            background: linear-gradient(135deg,#06b6d4,#34d399) !important;
+            border-radius: 8px !important;
+        }
+
+        .projects-alt .w-6.h-6.rounded-full.accent-gradient {
+            width: 28px !important;
+            height: 28px !important;
+            border-radius: 8px !important;
+        }
+
+        /* Responsive cart buttons: show floating cart on small screens (bottom-sheet UX), nav cart on larger screens */
+        #cartButton { display: none; }
+    #cartButtonNav { display: inline-flex; align-items:center; justify-content:center; position:relative; margin-left:8px; padding:6px; min-width:44px; min-height:44px; border-radius:10px; }
+    #cartBadgeNav { display: inline-flex; position:absolute; top:-6px; right:-6px; }
+
+        /* Small screens: show floating button, hide nav cart and convert sidebar into a bottom sheet */
+        @media (max-width: 768px) {
+            #cartButton { display: inline-flex !important; }
+            #cartButtonNav { display: none !important; }
+
+            /* Make the cart sidebar act like a bottom sheet on mobile */
+            #cartSidebar {
+                left: 0;
+                right: 0;
+                top: auto;
+                bottom: 0;
+                width: 100%;
+                height: 72vh;
+                max-width: 100%;
+                border-left: none;
+                border-top-left-radius: 14px;
+                border-top-right-radius: 14px;
+                padding: 18px;
+                transform: translateY(110%);
+                box-shadow: 0 -20px 50px rgba(0,0,0,0.6);
+            }
+
+            #cartSidebar.open {
+                transform: translateY(0);
+            }
+
+            #cartSidebar { overflow: hidden; }
+            #cartItems { max-height: 46vh; overflow:auto; }
+
+            /* Make the floating button slightly larger and easier to tap */
+            /* subir el botón para que no quede encima del badge de reCAPTCHA u otros widgets */
+            .cart-button { right: 18px; bottom: 84px; width:64px; height:64px; border-radius:16px; }
+            .cart-badge { min-width:22px; height:22px; font-size:12px }
+        }
+
+        /* Very large screens (TVs) — increase scale to remain usable */
+        @media (min-width: 1600px) {
+            body { font-size: 1.05rem; }
+            #cartSidebar { width: 420px; }
+        }
+
+                /* ---------------------------------------------
+                     NOTAS PARA DESARROLLADOR
+                     - Para cambiar la miniatura que aparece en el carrito, edita el atributo
+                         `data-product-image` del botón `Agregar al carrito` correspondiente.
+                         Ejemplo:
+                         <button class="btn-add-to-cart" data-product-name="STARTER" data-product-price="299" data-product-image="https://tudominio.com/img/starter.jpg">...
+
+                     - Resumen de atributos utilizados por el JS del carrito:
+                         * data-product-name  => nombre mostrado en carrito
+                         * data-product-price => precio numérico (sin símbolo)
+                         * data-product-image => URL absoluta o relativa de la miniatura
+
+                     - Responsivo: las reglas siguientes ajustan tipografía, contenedores e imágenes
+                         para que la web quede legible en móvil, tablet, PC y pantallas muy grandes (TV).
+                     --------------------------------------------- */
+
+                /* Tipografía y escalado fluido para todas las pantallas */
+                html { font-size: 16px; }
+                @media (max-width: 520px) { html { font-size: 15px; } }
+                @media (min-width: 1600px) { html { font-size: 18px; } }
+
+                /* Fluid images and media */
+                img, .image-container img { max-width: 100%; height: auto; display: block; }
+
+                /* Make main containers scale better on medium screens */
+                .max-w-7xl { max-width: calc(100% - 48px); padding-left: 24px; padding-right: 24px; }
+
+                /* Improve cart button hit area and visibility across devices */
+                .cart-button { padding: 6px; }
+                @media (min-width: 1024px) {
+                    /* On larger screens keep small floating button but slightly larger for easier click on TVs */
+                    .cart-button { width: 64px; height: 64px; right: 28px; bottom: 28px; }
+                    #cartSidebar { width: 460px; }
+                }
+                @media (min-width: 1600px) {
+                    .cart-button { width: 72px; height: 72px; right: 36px; bottom: 36px; }
+                    #cartSidebar { width: 520px; }
+                }
+
+                /* Small tweak for tablet widths to ensure nav cart remains tappable */
+                @media (min-width: 769px) and (max-width: 1024px) {
+                    #cartButtonNav { display: inline-flex !important; }
+                    .cart-button { right: 18px; bottom: 18px; }
+                }
+                html { font-size: clamp(14px, 1.25vw, 18px); }
+
+                /* Hacer que todas las imágenes del sitio escalen correctamente */
+                img { max-width: 100%; height: auto; display: block; }
+
+                /* Ajustes de contenedor para tablets y TV */
+                .max-w-7xl { max-width: 1280px; padding-left: 20px; padding-right: 20px; }
+                @media (min-width: 1400px) {
+                        .max-w-7xl { max-width: 1400px; }
+                }
+                @media (min-width: 2000px) {
+                        .max-w-7xl { max-width: 1800px; }
+                        html { font-size: 20px; }
+                }
+
+                /* Mejorar legibilidad en tablets (anchura intermedia) */
+                @media (min-width: 768px) and (max-width: 1024px) {
+                        .section-title { font-size: clamp(1.6rem, 3.6vw, 2.4rem); }
+                        .card { padding: 20px; }
+                }
+
+                /* Ajustes de grids: garantizar separaciones adecuadas en pantallas pequeñas */
+                @media (max-width: 640px) {
+                        .grid { gap: 14px !important; }
+                        .card { padding: 18px; border-radius: 14px; }
+                }
+
+                /* -------------------- Chat widget styles -------------------- */
+                .chat-button {
+                    position: fixed;
+                    left: 18px;
+                    bottom: 18px;
+                    width: 56px;
+                    height: 56px;
+                    border-radius: 14px;
+                    background: linear-gradient(135deg,#ff006e,#8338ec);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 8px 30px rgba(131,56,236,0.18);
+                    z-index: 99999;
+                    cursor: pointer;
+                    border: none;
+                }
+
+                .chat-window {
+                    position: fixed;
+                    left: 18px;
+                    bottom: 86px;
+                    width: 360px;
+                    max-width: calc(100vw - 36px);
+                    height: 520px;
+                    background: rgba(10,10,12,0.98);
+                    border-radius: 14px;
+                    box-shadow: 0 20px 60px rgba(2,6,23,0.6);
+                    z-index: 100000;
+                    display: none;
+                    flex-direction: column;
+                    overflow: hidden;
+                    border: 1px solid rgba(255,255,255,0.04);
+                }
+
+                .chat-window.open { display: flex; }
+
+                .chat-header {
+                    padding: 12px 14px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    border-bottom: 1px solid rgba(255,255,255,0.03);
+                    background: linear-gradient(90deg, rgba(6,182,212,0.06), rgba(59,130,246,0.03));
+                }
+
+                .chat-title { font-weight:700; color:#fff; }
+                .chat-sub { font-size:12px; color:#9CA3AF }
+
+                .chat-messages { flex:1; padding:12px; overflow:auto; display:flex; flex-direction:column; gap:10px; }
+
+                .msg { max-width:78%; padding:10px 12px; border-radius:12px; font-size:14px; line-height:1.3 }
+                .msg.user { align-self:flex-end; background:linear-gradient(135deg,#ff006e,#8338ec); color:#fff; border-bottom-right-radius:4px }
+                .msg.bot { align-self:flex-start; background:rgba(255,255,255,0.03); color:#e6eef8 }
+
+                .chat-actions { padding:10px; border-top:1px solid rgba(255,255,255,0.03); display:flex; gap:8px; flex-direction:column }
+                .chat-input { display:flex; gap:8px }
+                .chat-input input { flex:1; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:#fff }
+            .chat-input button { padding:10px 12px; border-radius:10px; border:none; background:linear-gradient(135deg,#ff006e,#8338ec); color:#fff; cursor:pointer }
+
+                .quick-buttons { display:flex; gap:8px; flex-wrap:wrap }
+                .quick-buttons button { padding:8px 10px; border-radius:999px; border:1px solid rgba(255,255,255,0.04); background:rgba(255,255,255,0.02); color:#fff; font-size:13px; cursor:pointer }
+
+                @media (max-width: 520px) {
+                    .chat-window { width: calc(100vw - 36px); height: 60vh; left: 18px; right: 18px; }
+                }
+
+    </style>
+</head>
+<body>
+    <!-- Accessibility controls removed -->
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-40 bg-black/50 backdrop-blur-xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold gradient-text">Daniii.org</div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#inicio" class="nav-link text-sm font-medium text-gray-300 hover:text-white">Inicio</a>
+                    <a href="#servicios" class="nav-link text-sm font-medium text-gray-300 hover:text-white">Servicios</a>
+                    <a href="#productos" class="nav-link text-sm font-medium text-gray-300 hover:text-white">Productos</a>
+                    <a href="#contacto" class="nav-link text-sm font-medium text-gray-300 hover:text-white">Contacto</a>
+                    <button class="btn-primary px-6 py-2.5 rounded-full text-sm font-semibold text-white">
+                        Comenzar
+                    </button>
+                    <!-- Cart button in nav for desktop -->
+                    <button id="cartButtonNav" class="cart-toggle" aria-label="Abrir carrito" title="Carrito" aria-controls="cartSidebar" aria-expanded="false">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true">
+                            <path d="M6 6h15l-1.5 9h-12z" stroke="#fff"/>
+                            <circle cx="10" cy="20" r="1" fill="#fff"/>
+                            <circle cx="18" cy="20" r="1" fill="#fff"/>
+                        </svg>
+                        <div id="cartBadgeNav" class="cart-badge" style="display:none;position:relative;top:-12px;right:-8px;">0</div>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-white">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 bottom-0 w-full max-w-sm bg-black/95 backdrop-blur-xl z-50 p-8">
+        <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 text-white">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+        <div class="flex flex-col gap-6 mt-16">
+            <a href="#inicio" onclick="toggleMobileMenu()" class="text-2xl font-medium text-white hover:text-gray-300">Inicio</a>
+            <a href="#servicios" onclick="toggleMobileMenu()" class="text-2xl font-medium text-white hover:text-gray-300">Servicios</a>
+            <a href="#productos" onclick="toggleMobileMenu()" class="text-2xl font-medium text-white hover:text-gray-300">Productos</a>
+            <a href="#contacto" onclick="toggleMobileMenu()" class="text-2xl font-medium text-white hover:text-gray-300">Escribenos</a>
+            <button class="btn-primary px-8 py-4 rounded-full text-lg font-semibold text-white mt-4">
+                Escribenos 
+            </button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center hero-gradient grid-pattern pt-20">
+        <div class="max-w-7xl mx-auto px-6 py-20 text-center">
+            <div class="inline-block mb-6 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-gray-300">
+                ✨ Descuento Halloween 10% 
+            </div>
+            <h1 class="section-title gradient-text mb-6 text-balance">
+                Hacemos que tu idea tenga flow digital
+            </h1>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-12 text-pretty">
+                Diseños modernos, precios bajos y resultados que marcan la diferencia.
+No te quedes atrás — la era digital está aquí
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button class="btn-primary px-8 py-4 rounded-full text-base font-semibold text-white" data-target="#servicios">
+                    Servicios
+                </button>
+                <button class="btn-secondary px-8 py-4 rounded-full text-base font-semibold text-white" data-target="#otros">
+                    Otros 
+                </button>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- Services Section -->
+    <section id="servicios" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="section-title gradient-text mb-6">Nuestros servicios</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Soluciones integrales para llevar tu presencia digital al siguiente nivel
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="card rounded-3xl p-8">
+                    <div class="w-14 h-14 rounded-2xl accent-gradient flex items-center justify-center mb-6">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Desarrollo Web</h3>
+                    <p class="text-gray-400 mb-6">
+                        Una forma accesible y económica de darle presencia a tu negocio perfecto si quieres estar en línea sin pagar de más.
+                    </p>
+                    <a href="#" class="text-sm font-semibold text-white inline-flex items-center gap-2 hover:gap-3 transition-all">
+                        Más información
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div class="card rounded-3xl p-8">
+                    <div class="w-14 h-14 rounded-2xl accent-gradient flex items-center justify-center mb-6">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <rect x="5" y="2" width="14" height="20" rx="2"/>
+                            <line x1="12" y1="18" x2="12" y2="18"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">ADS</h3>
+                    <p class="text-gray-400 mb-6">
+                        Tu negocio también puede anunciarse como los grandes campañas publicitarias adaptadas a tu presupuesto.
+                        
+                    </p>
+                    <a href="#" class="text-sm font-semibold text-white inline-flex items-center gap-2 hover:gap-3 transition-all">
+                        Más información
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="card rounded-3xl p-8">
+                    <div class="w-14 h-14 rounded-2xl accent-gradient flex items-center justify-center mb-6">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2"/>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Otros</h3>
+                    <p class="text-gray-400 mb-6">
+                        Hacemos que la tecnología trabaje por ti desde bots que te ahorran tiempo hasta un hosting rápido y estable todo lo que tu necesitas sin enredos.
+                    </p>
+                    <a href="#" class="text-sm font-semibold text-white inline-flex items-center gap-2 hover:gap-3 transition-all">
+                        Más información
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-32 px-6 bg-white/[0.02]">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center mb-32">
+                <div>
+                    <div class="feature-number mb-4">01</div>
+                    <h3 class="text-4xl font-semibold mb-6">Tener tu web sí hace la diferencia</h3>
+                    <p class="text-xl text-gray-400 mb-8">
+                        Tu web es como tu casa digital.
+un espacio donde las personas pueden conocerte, confiar en ti y volver cuando quieran siempre está ahí, trabajando por ti.
+                        
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300">Más confianza, una web transmite seriedad y profesionalismo.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300">Todo en un solo lugar muestra tus productos, redes o servicios sin confundir a nadie.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300">Siempre visible, tu negocio abierto las 24 horas, al alcance de cualquiera, en cualquier momento.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80" alt="Diseño web moderno" class="w-full h-auto rounded-2xl">
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="order-2 lg:order-1 image-container">
+                    <img src="https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&w=1200&q=80" alt="Optimización de rendimiento" class="w-full h-auto rounded-2xl">
+                </div>
+                <div class="order-1 lg:order-2">
+                    <div class="feature-number mb-4">02</div>
+                    <h3 class="text-4xl font-semibold mb-6">Tu portafolio </h3>
+                    <p class="text-xl text-gray-400 mb-8">
+                    No necesitas ser famoso ni tener un negocio, solo ganas de destacar.
+Tu perfil digital, rápido y fácil.
+Reúne todo en un solo link y deja que te descubran.
+                        
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300">Todo tu mundo online en un lugar, redes, trabajos y lo que te define.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300">Muéstrate como eres, destaca profesionalmente y muestra tu esencia.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300"> Un espacio único donde otros pueden conocerte, seguir tu trabajo y conectar contigo.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="productos" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="section-title gradient-text mb-6">Productos</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Tú enfócate en brillar, nosotros en construir tu espacio digital.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="card rounded-3xl p-8 flex flex-col">
+                        <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-gray-400 mb-2">STARTER</h4>
+                            <div class="flex items-baseline gap-2 mb-4">
+                                <span class="text-5xl font-bold">$299</span>
+                                <span class="text-gray-400">/variable</span>
+                            </div>
+                            <p class="text-gray-400">Perfecto para emprendedores y negocios pequeños</p>
+                        </div>
+                        <ul class="space-y-4 mb-8 flex-grow">
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span class="text-gray-300">Sitio web de hasta 5 páginas</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span class="text-gray-300">Diseño responsive</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span class="text-gray-300">Hosting free incluido</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span class="text-gray-300">Soporte por email</span>
+                            </li>
+                        </ul>
+                    <button class="btn-secondary btn-add-to-cart w-full py-4 rounded-full font-semibold" data-product-name="STARTER" data-product-price="299" data-product-image="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=400&q=60">
+                        Agregar al carrito
+                    </button>
+                </div>
+
+                <!-- Product 2 - Featured -->
+                <div class="card rounded-3xl p-8 flex flex-col relative border-2 border-purple-500/50">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full accent-gradient text-sm font-semibold text-white">
+                        Más popular
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="text-sm font-semibold text-gray-400 mb-2">PRO</h4>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-5xl font-bold">$50</span>
+                            <span class="text-gray-400">/variable</span>
+                        </div>
+                        <p class="text-gray-400">Ideal para empresas en crecimiento</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Sitio web ilimitado</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Diseño personalizado</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Hosting premium + CDN</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">SEO avanzado</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Soporte prioritario 24/7</span>
+                        </li>
+                    </ul>
+                    <button class="btn-primary btn-add-to-cart w-full py-4 rounded-full font-semibold" data-product-name="PROFESSIONAL" data-product-price="50" data-product-image="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=60">
+                        Agregar al carrito
+                    </button>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="card rounded-3xl p-8 flex flex-col">
+                    <div class="mb-6">
+                        <h4 class="text-sm font-semibold text-gray-400 mb-2">ENTERPRISE</h4>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-5xl font-bold">Custom</span>
+                        </div>
+                        <p class="text-gray-400">Soluciones a medida para grandes empresas</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Todo lo de Professional</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Desarrollo personalizado</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Infraestructura dedicada</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">Equipo dedicado</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="text-gray-300">SLA garantizado</span>
+                        </li>
+                    </ul>
+                    <button class="btn-secondary btn-add-to-cart w-full py-4 rounded-full font-semibold" data-product-name="ENTERPRISE (Custom)" data-product-price="0" data-product-image="https://images.unsplash.com/photo-1556767576-5ec41e3239aa?auto=format&fit=crop&w=400&q=60">
+                        Agregar al carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Otros Section -->
+    <section id="otros" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="section-title gradient-text mb-6">Otros</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Servicios complementarios pensados para crecer rápido
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Item 1: Bots -->
+                <div class="card rounded-3xl p-8 flex flex-col">
+                        <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-gray-400 mb-2">BOTS</h4>
+                            <div class="flex items-baseline gap-2 mb-4">
+                                <span class="text-3xl font-bold">$49</span>
+                            </div>
+                            <p class="text-gray-400">Automatizaciones y bots personalizados para escalar tareas.</p>
+                        </div>
+                        <ul class="space-y-4 mb-8 flex-grow text-gray-300">
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span>Integraciones a medida</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span>Soporte y mantenimiento</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span>Escalado rápido</span>
+                            </li>
+                        </ul>
+                    <button class="btn-primary btn-add-to-cart w-full py-4 rounded-full font-semibold" data-product-name="BOTS" data-product-price="49" data-product-image="https://images.unsplash.com/photo-1555949963-aa79dcee981d?auto=format&fit=crop&w=400&q=60">Agregar al carrito</button>
+                </div>
+
+                <!-- Item 2: VPS -->
+                <div class="card rounded-3xl p-8 flex flex-col">
+                        <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-gray-400 mb-2">Portafolio</h4>
+                            <div class="flex items-baseline gap-2 mb-4">
+                                <span class="text-3xl font-bold">$19</span>
+                                <span class="text-gray-400">/mes</span>
+                            </div>
+                            <p class="text-gray-400">Servidores virtuales escalables y con alta disponibilidad.</p>
+                        </div>
+                        <ul class="space-y-4 mb-8 flex-grow text-gray-300">
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span>Instancias rápidas</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span>Backups automatizados</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span>Monitorización incluida</span>
+                            </li>
+                        </ul>
+                    <button class="btn-primary btn-add-to-cart w-full py-4 rounded-full font-semibold" data-product-name="VPS" data-product-price="19" data-product-image="https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=400&q=60">Agregar al carrito</button>
+                </div>
+
+                <!-- Item 3: Hosting -->
+                <div class="card rounded-3xl p-8 flex flex-col">
+                    <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-gray-400 mb-2">HOSTING</h4>
+                            <div class="flex items-baseline gap-2 mb-4">
+                                <span class="text-3xl font-bold">$99</span>
+                                <span class="text-gray-400">/mes</span>
+                            </div>
+                            <p class="text-gray-400">Hosting premium con CDN y soporte 24/7.</p>
+                        </div>
+                        <ul class="space-y-4 mb-8 flex-grow text-gray-300">
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span>CDN global</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span>SSL y seguridad</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff006e" stroke-width="2" class="flex-shrink-0 mt-0.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span>Soporte prioritario</span>
+                            </li>
+                        </ul>
+                    <button class="btn-primary btn-add-to-cart w-full py-4 rounded-full font-semibold" data-product-name="HOSTING" data-product-price="99" data-product-image="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=60">Agregar al carrito</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="proyectos" class="py-32 px-6 bg-white/[0.02] projects-alt">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="section-title gradient-text mb-6">Proyectos destacados</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Deja que nosotros nos ocupemos del resto:)
+                </p>
+            </div>
+
+            <div class="grid gap-12">
+                <!-- Project 01: text left, image right (like Features) -->
+                <div class="project-item grid lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <div class="feature-number mb-4">01</div>
+                        <h3 class="text-4xl font-semibold mb-6">Diseño centrado en el usuario</h3>
+                        <p class="text-xl text-gray-400 mb-8">Creamos experiencias intuitivas que tus usuarios amarán. Cada pixel está pensado para maximizar la conversión y el engagement.</p>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Investigación de usuarios y análisis de comportamiento</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Prototipos interactivos y pruebas de usabilidad</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Diseño responsive para todos los dispositivos</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?auto=format&fit=crop&w=1400&q=80" alt="Proyecto 1" class="w-full h-96 object-cover rounded-2xl">
+                    </div>
+                </div>
+
+                <!-- Project 02: image left, text right (alternate like Features) -->
+                <div class="project-item grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="image-container order-1 lg:order-1">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=80" alt="Proyecto 2" class="w-full h-96 object-cover rounded-2xl">
+                    </div>
+                    <div class="order-2 lg:order-2">
+                        <div class="feature-number mb-4">02</div>
+                        <h3 class="text-4xl font-semibold mb-6">Diseño centrado en el usuario</h3>
+                        <p class="text-xl text-gray-400 mb-8">Creamos experiencias intuitivas que tus usuarios amarán. Cada pixel está pensado para maximizar la conversión y el engagement.</p>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Investigación de usuarios y análisis de comportamiento</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Prototipos interactivos y pruebas de usabilidad</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full accent-gradient flex items-center justify-center flex-shrink-0 mt-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300">Diseño responsive para todos los dispositivos</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-32 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="section-title gradient-text mb-6">¿Listo?</h2>
+            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+                Conversemos sobre tu proyecto y cómo podemos ayudarte
+            </p>
+            <div class="card rounded-3xl p-12">
+                <form class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <input type="text" placeholder="Nombre" class="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-white/20 focus:outline-none text-white placeholder-gray-500 transition-colors">
+                        <input type="email" placeholder="Email" class="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-white/20 focus:outline-none text-white placeholder-gray-500 transition-colors">
+                    </div>
+                    <input id="contact-asunto" type="text" placeholder="Asunto" class="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-white/20 focus:outline-none text-white placeholder-gray-500 transition-colors">
+                    <textarea placeholder="Cuéntanos sobre tu proyecto" rows="6" class="w-full px-6 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-white/20 focus:outline-none text-white placeholder-gray-500 transition-colors resize-none"></textarea>
+                    <button type="submit" class="btn-primary w-full py-4 rounded-full text-base font-semibold text-white">
+                        Enviar Solicitud 
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-12 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="text-2xl font-bold gradient-text mb-4">Daniii.org</div>
+                    <p class="text-gray-400 text-sm">
+                        Impulsa tus ideas, nosostros te ayudamos.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Servicios</h5>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Desarrollo Web</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Bots</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Hosting</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">VPS</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Empresa</h5>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Bogotá D.C</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">+33 7 45 47 40 53</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">AntonnellaRG</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contacto</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Síguenos</h5>
+                    <div class="flex gap-4">
+                        <!-- Facebook -->
+                        <a href="https://facebook.com/DanielValencia" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 6.626 5.373 12 12 12s12-5.374 12-12C24 5.373 18.627 0 12 0z" fill="#1877F2"/>
+                                <path d="M15.25 8.5h-1.25c-.25 0-.75.25-.75.75V10h2l-.25 2h-1.75v5h-2v-5H10.5v-2h1.25V9.25c0-1.5.75-2.75 2.75-2.75h1.75v2z" fill="#fff"/>
+                            </svg>
+                        </a>
+
+                        <!-- WhatsApp -->
+                        <a href="https://wa.me/33745474053" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M20.52 3.48A11.88 11.88 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.56 4.07 1.53 5.8L0 24l6.39-1.66A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.16-3.48-8.52z" fill="#25D366"/>
+                                <path d="M17.56 14.2c-.28-.14-1.66-.82-1.92-.92-.26-.09-.45-.14-.64.14-.19.28-.74.92-.91 1.11-.17.19-.34.21-.62.07-.28-.14-1.18-.43-2.25-1.39-.83-.74-1.39-1.66-1.56-1.94-.17-.28-.02-.43.13-.57.14-.14.31-.36.46-.54.15-.18.2-.31.3-.52.1-.21.05-.39-.03-.54-.08-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.48-.17 0-.36-.02-.55-.02-.19 0-.5.07-.77.36-.26.29-1 1-1 2.44s1.02 2.83 1.16 3.03c.14.2 2.01 3.06 4.87 4.29 1.36.58 1.96.63 2.67.53.43-.06 1.66-.68 1.9-1.33.24-.65.24-1.2.17-1.32-.07-.11-.26-.18-.54-.32z" fill="#fff"/>
+                            </svg>
+                        </a>
+
+                        <!-- Instagram -->
+                        <a href="https://instagram.com/Dani.u3" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#igGrad)" stroke-width="1.6" fill="url(#igGradBg)"/>
+                                <circle cx="12" cy="12" r="3.2" fill="#fff"/>
+                                <circle cx="17.5" cy="6.5" r="1" fill="#fff"/>
+                                <defs>
+                                    <linearGradient id="igGrad" x1="0" x2="1" y1="0" y2="1">
+                                        <stop offset="0%" stop-color="#feda75"/>
+                                        <stop offset="50%" stop-color="#d62976"/>
+                                        <stop offset="100%" stop-color="#8134af"/>
+                                    </linearGradient>
+                                    <linearGradient id="igGradBg" x1="0" x2="1" y1="0" y2="1">
+                                        <stop offset="0%" stop-color="#feda75" stop-opacity="0.9"/>
+                                        <stop offset="100%" stop-color="#8134af" stop-opacity="0.85"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </a
+
+                        <!-- Telegram -->
+                        <a href="https://t.me/Daniellx777" target="_blank" rel="noopener noreferrer" aria-label="Telegram" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 6.626 5.373 12 12 12s12-5.374 12-12C24 5.373 18.627 0 12 0z" fill="#2AABEE"/>
+                                <path d="M18.7 7.3c-.2.9-1.1 4.2-1.6 6-.2.7-.6 1-1.2 1.1-.5.1-1-.2-1.6-.5-1.3-.7-2.7-1.5-4-2.2-1.3-.7-1.3-.6 0-1.2 1.3-.6 2.6-1.3 3.9-1.9 1.1-.5 2.1-.9 2.5-.9.2 0 .3.1.4.6.1.4.2.7.6 1.1z" fill="#fff"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+                <p>&copy; 2022 Daniii. Todos los derechos reservados.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-white transition-colors">Dominio</a>
+                    <a href="#" class="hover:text-white transition-colors">Términos</a>
+                    <a href="#" class="hover:text-white transition-colors">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Carrito flotante -->
+    <button id="cartButton" class="cart-button" aria-label="Abrir carrito" title="Carrito" aria-controls="cartSidebar" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true">
+            <path d="M6 6h15l-1.5 9h-12z" stroke="#fff"/>
+            <circle cx="10" cy="20" r="1" fill="#fff"/>
+            <circle cx="18" cy="20" r="1" fill="#fff"/>
+        </svg>
+        <div id="cartBadge" class="cart-badge" style="display:none">0</div>
+    </button>
+
+    <div id="cartSidebar" role="dialog" aria-modal="true" aria-hidden="true">
+    <button id="closeCart" aria-label="Cerrar carrito" style="float:right;border:none;background:transparent;color:#fff;font-weight:700;font-size:18px">✕</button>
+        <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:12px">
+                <h3 style="color:#fff;font-size:20px;margin:0">Tu carrito</h3>
+                <div id="cartCountBadge" style="background:#111827;color:#fff;padding:6px 8px;border-radius:999px;font-weight:700;font-size:13px;margin-left:8px;">0 items</div>
+            </div>
+
+            <!-- Device quick indicators: Mobile / Tablet / PC / TV (visual only) -->
+            <div style="display:flex;gap:8px;align-items:center;color:#9CA3AF;font-size:13px">
+                <div style="display:flex;align-items:center;gap:6px">
+                    <!-- Mobile -->
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.6" style="opacity:0.95"><rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="18" r="0.6"/></svg>
+                    <span>Mobile</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px">
+                    <!-- Tablet -->
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.6" style="opacity:0.95"><rect x="4" y="2" width="16" height="20" rx="2"/></svg>
+                    <span>Tablet</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px">
+                    <!-- PC -->
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.6" style="opacity:0.95"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
+                    <span>PC</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px">
+                    <!-- TV -->
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.6" style="opacity:0.95"><rect x="2" y="4" width="20" height="12" rx="1"/><polyline points="8 20 12 16 16 20"/></svg>
+                    <span>TV</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="cartItems" style="max-height:46vh;overflow:auto;padding-right:8px;margin-top:12px"></div>
+
+        <div class="cart-total">
+            <div style="color:#9CA3AF">Total</div>
+            <div id="cartTotal" style="font-weight:800;color:#fff">$0</div>
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+            <div style="flex:1;color:#9CA3AF">¿Deseas aplicar descuento del 10%?</div>
+            <button id="applyDiscountBtn" class="btn-secondary" style="padding:10px 12px;border-radius:10px">Aplicar 10%</button>
+        </div>
+        <div id="discountInfo" style="margin-top:8px;color:#9CA3AF;font-size:13px"></div>
+
+        <div style="margin-top:18px;display:flex;gap:8px;flex-direction:column">
+            <button id="checkoutBtn" class="btn-primary w-full py-3 rounded-full font-semibold">Comprar</button>
+            <div style="display:flex;gap:8px">
+                <button id="clearCart" class="btn-secondary w-full py-3 rounded-full font-semibold">Vaciar carrito</button>
+                <button id="continueShopping" class="btn-secondary w-full py-3 rounded-full font-semibold">Seguir comprando</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="flyElm"></div>
+
+    <!-- Chat widget removed per user request -->
+
+    <script>
+        // Accessibility controls removed (buttons + handlers) per user request
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+            
+            if (menu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Cerrar menú al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('mobileMenu');
+            const menuButton = document.querySelector('[onclick="toggleMobileMenu()"]');
+            
+            if (menu.classList.contains('active') && 
+                !menu.contains(e.target) && 
+                !menuButton.contains(e.target)) {
+                toggleMobileMenu();
+            }
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const target = document.querySelector(targetId);
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Cerrar menú móvil si está abierto
+                    const menu = document.getElementById('mobileMenu');
+                    if (menu.classList.contains('active')) {
+                        toggleMobileMenu();
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(button => {
+            if (!button.closest('form') && button.textContent.includes('Comenzar')) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const contactSection = document.querySelector('#contacto');
+                    if (contactSection) {
+                        const headerOffset = 80;
+                        const elementPosition = contactSection.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            } else if (button.textContent.includes('Explorar servicios')) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelector('#servicios').scrollIntoView({ behavior: 'smooth' });
+                });
+            } else if (button.textContent.includes('Ver proyectos')) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const gallerySection = document.querySelector('#proyectos');
+                    if (gallerySection) {
+                        const headerOffset = 80;
+                        const elementPosition = gallerySection.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    }
+                });
+            } else if (button.textContent.includes('Contactar')) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelector('#contacto').scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+        });
+
+                        // Firebase (Firestore) client-side + reCAPTCHA v3
+                        // He usado imports modulares desde el CDN. Tu firebaseConfig fue pegado arriba en el archivo.
+                        (function () {
+                                // Primero, insertar el script de reCAPTCHA (site key proporcionada por el usuario)
+                                const recaptchaSiteKey = '6LfadfkrAAAAAMzz_vpFFnyPA2JB1LNqVW0Uy3i2';
+                                const recaptchaScript = document.createElement('script');
+                                recaptchaScript.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`;
+                                recaptchaScript.async = true;
+                                recaptchaScript.defer = true;
+                                document.head.appendChild(recaptchaScript);
+
+                                // --- Helpers globales: toast + estilos + confetti loader + spinner ---
+                                (function setupUIHelpers() {
+                                    if (window._uiHelpersInstalled) return;
+
+                                    // Inject toast & spinner styles
+                                    const s = document.createElement('style');
+                                    s.textContent = '\n#global-toast-container{position:fixed;right:0;left:0;bottom:24px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:99999;pointer-events:none}\n.global-toast{pointer-events:auto;min-width:220px;max-width:420px;padding:12px 16px;border-radius:12px;color:#fff;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,0.5);opacity:0;transform:translateY(10px);transition:all .28s cubic-bezier(.2,.9,.3,1)}\n.global-toast.show{opacity:1;transform:translateY(0)}\n.global-toast.info{background:linear-gradient(90deg,#6b7280,#111827)}\n.global-toast.success{background:linear-gradient(90deg,#10b981,#059669)}\n.global-toast.error{background:linear-gradient(90deg,#ef4444,#b91c1c)}\n.btn-spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,0.25);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-right:8px}\n@keyframes spin{to{transform:rotate(360deg)}}\n';
+                                    document.head.appendChild(s);
+
+                                    // Toast container
+                                    const container = document.createElement('div');
+                                    container.id = 'global-toast-container';
+                                    document.body.appendChild(container);
+
+                                    // showToast helper
+                                    window.showToast = function (message, type = 'info', ms = 3500) {
+                                        try {
+                                            const toast = document.createElement('div');
+                                            toast.className = 'global-toast ' + (type || 'info');
+                                            toast.innerHTML = String(message);
+                                            document.getElementById('global-toast-container').appendChild(toast);
+                                            // small delay to allow transition
+                                            requestAnimationFrame(() => toast.classList.add('show'));
+                                            setTimeout(() => {
+                                                toast.classList.remove('show');
+                                                setTimeout(() => toast.remove(), 300);
+                                            }, ms);
+                                            return toast;
+                                        } catch (e) { console.warn('showToast failed', e); }
+                                    };
+
+                                    // Load canvas-confetti for celebratory effect
+                                    const confettiScript = document.createElement('script');
+                                    confettiScript.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
+                                    confettiScript.async = true;
+                                    confettiScript.onload = () => {
+                                        // window.confetti becomes available
+                                    };
+                                    document.head.appendChild(confettiScript);
+
+                                    window._uiHelpersInstalled = true;
+                                })();
+
+                                // Luego, el módulo que inicializa Firebase y usa grecaptcha antes de enviar
+                                const moduleScript = document.createElement('script');
+                                moduleScript.type = 'module';
+                                moduleScript.textContent = `
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCTa_tWYXZHUWtEuPa4F11wzHQ9MuBu8iU",
+            authDomain: "miweb-7522e.firebaseapp.com",
+            projectId: "miweb-7522e",
+            storageBucket: "miweb-7522e.firebasestorage.app",
+            messagingSenderId: "1085379663104",
+            appId: "1:1085379663104:web:46faa67189689fb2a84fe5",
+            measurementId: "G-KEFZR0DRWM"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const contactForm = document.querySelector('#contacto form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const nombre = contactForm.querySelector('input[placeholder="Nombre"]').value.trim();
+                const email = contactForm.querySelector('input[placeholder="Email"]').value.trim();
+                const asunto = contactForm.querySelector('input[placeholder="Asunto"]').value.trim();
+                const mensaje = contactForm.querySelector('textarea').value.trim();
+
+                if (!nombre || !email || !mensaje) {
+                    window.showToast('Por favor completa todos los campos', 'error');
+                    return;
+                }
+
+                const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    window.showToast('Por favor ingresa un email válido', 'error');
+                    return;
+                }
+
+                const submitButton = contactForm.querySelector('button[type="submit"]');
+                const originalHTML = submitButton.innerHTML;
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="btn-spinner"></span>Enviando...';
+
+                // Obtener token de reCAPTCHA (si está disponible). Si no, continuar sin token.
+                let recaptchaToken = null;
+                try {
+                    if (window.grecaptcha && typeof grecaptcha.execute === 'function') {
+                        await grecaptcha.ready();
+                        recaptchaToken = await grecaptcha.execute('${recaptchaSiteKey}', { action: 'submit' });
+                    }
+                } catch (err) {
+                    console.warn('reCAPTCHA error or not ready, proceeding without token', err);
+                }
+
+                try {
+                    const payload = {
+                        nombre,
+                        email,
+                        asunto: asunto || null,
+                        mensaje,
+                        created_at: serverTimestamp(),
+                        recaptchaToken: recaptchaToken || null
+                    };
+
+                    const docRef = await addDoc(collection(db, 'messages'), payload);
+
+                    // Success UI: toast, confetti, button check
+                    try {
+                        window.showToast('Mensaje enviado. ¡Gracias!', 'success');
+                        if (window.confetti) {
+                            window.confetti({ particleCount: 60, spread: 120 });
+                        }
+                    } catch (e) { console.warn(e); }
+
+                    submitButton.innerHTML = '\u2713 Enviado';
+                    setTimeout(() => {
+                        submitButton.innerHTML = originalHTML;
+                        submitButton.disabled = false;
+                    }, 2200);
+
+                    contactForm.reset();
+                } catch (err) {
+                    console.error('Error guardando en Firestore', err);
+                    window.showToast('Error enviando mensaje. Revisa la consola.', 'error');
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalHTML;
+                }
+            });
+        }
+        `;
+                                document.body.appendChild(moduleScript);
+                        })();
+
+        let lastScrollY = window.pageYOffset;
+        const nav = document.querySelector('nav');
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.pageYOffset;
+
+            // Ocultar/mostrar navegación al hacer scroll
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                nav.style.transform = 'translateY(-100%)';
+            } else {
+                nav.style.transform = 'translateY(0)';
+            }
+
+            lastScrollY = currentScrollY;
+
+            // Efecto parallax en hero: solo en pantallas grandes y no táctiles
+            const hero = document.querySelector('#inicio');
+            const touchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+            if (hero && !touchDevice && window.innerWidth > 768 && currentScrollY < window.innerHeight) {
+                hero.style.transform = `translateY(${currentScrollY * 0.5}px)`;
+                hero.style.opacity = 1 - (currentScrollY / window.innerHeight) * 0.5;
+            } else if (hero) {
+                // Reset transforms on touch/small devices to avoid visual glitches
+                hero.style.transform = '';
+                hero.style.opacity = '';
+            }
+        });
+
+        const observerOptions = {
+            threshold: 0.12,
+            rootMargin: '0px 0px -80px 0px'
+        };
+
+
+        const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        // Always fade in (opacity) but only apply move when appropriate
+                        entry.target.classList.add('animate-in');
+                        entry.target.classList.remove('pre-animate');
+
+                        // If the element is an image container and device is non-touch/large, add float
+                        if (entry.target.classList.contains('image-container')) {
+                            if (!isTouch && window.innerWidth > 768) {
+                                entry.target.classList.add('float-animation');
+                            }
+                        } else {
+                            // For typical blocks (cards, project items, etc.) add move transform
+                            entry.target.classList.add('animate-move');
+                        }
+                    }, index * 90);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe cards, image containers, section titles and project items so they animate when visible
+        document.querySelectorAll('.card, .image-container, .section-title, .project-item').forEach(el => {
+            // add pre-animate class so CSS handles the initial state
+            el.classList.add('pre-animate');
+            observer.observe(el);
+        });
+
+        const animateNumbers = () => {
+            const numbers = document.querySelectorAll('.feature-number');
+            numbers.forEach(num => {
+                const target = parseInt(num.textContent);
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        num.textContent = target.toString().padStart(2, '0');
+                        clearInterval(timer);
+                    } else {
+                        num.textContent = Math.floor(current).toString().padStart(2, '0');
+                    }
+                }, 30);
+            });
+        };
+
+        // Observar números para animarlos cuando sean visibles
+        const numberObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateNumbers();
+                    numberObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.feature-number').forEach(num => {
+            numberObserver.observe(num);
+        });
+
+        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(button => {
+            button.addEventListener('mouseenter', function(e) {
+                this.style.transform = 'scale(1.05)';
+            });
+            
+            button.addEventListener('mouseleave', function(e) {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        const progressBar = document.createElement('div');
+        progressBar.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.1s ease;
+        `;
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.pageYOffset / windowHeight) * 100;
+            progressBar.style.width = scrolled + '%';
+        });
+
+        // -- Carrito: versión mejorada, responsive y persistente (thumbnails, qty, remove, cupones) --
+        (function () {
+            const STORAGE_KEY = 'daniii_cart_v2';
+            const STORAGE_META = 'daniii_cart_meta';
+            let cart = [];
+            let cartMeta = { coupon: null };
+
+            const cartToggles = Array.from(document.querySelectorAll('.cart-toggle, #cartButton'));
+            const cartBadge = document.getElementById('cartBadge');
+            const cartBadgeNav = document.getElementById('cartBadgeNav');
+            const cartSidebar = document.getElementById('cartSidebar');
+            const cartItemsEl = document.getElementById('cartItems');
+            const cartTotalEl = document.getElementById('cartTotal');
+            const flyElm = document.getElementById('flyElm');
+
+            function save() {
+                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); localStorage.setItem(STORAGE_META, JSON.stringify(cartMeta)); } catch (e) { console.warn('cart save failed', e); }
+            }
+
+            function load() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    cart = raw ? JSON.parse(raw) : [];
+                    const metaRaw = localStorage.getItem(STORAGE_META);
+                    cartMeta = metaRaw ? JSON.parse(metaRaw) : { coupon: null };
+                } catch (e) { cart = []; }
+            }
+
+            function getVisibleCartToggle() {
+                for (const el of cartToggles) {
+                    if (!el) continue;
+                    const cs = window.getComputedStyle(el);
+                    if (cs && cs.display !== 'none' && cs.visibility !== 'hidden') return el;
+                }
+                return document.getElementById('cartButton') || document.getElementById('cartButtonNav');
+            }
+
+            function formatPrice(n) {
+                return '$' + Number(n || 0).toLocaleString();
+            }
+
+            function renderItem(it, idx) {
+                const row = document.createElement('div');
+                row.className = 'cart-item';
+                row.style.padding = '10px 0';
+
+                const thumb = document.createElement('div');
+                thumb.style.width = '56px';
+                thumb.style.height = '56px';
+                thumb.style.flex = '0 0 56px';
+                thumb.style.borderRadius = '8px';
+                thumb.style.overflow = 'hidden';
+                thumb.style.background = 'linear-gradient(90deg,#111, #222)';
+                const img = document.createElement('img');
+                img.src = it.image || 'https://via.placeholder.com/120?text=img';
+                img.alt = it.name;
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                thumb.appendChild(img);
+
+                const meta = document.createElement('div');
+                meta.style.display = 'flex';
+                meta.style.flexDirection = 'column';
+                meta.style.marginLeft = '12px';
+                meta.style.gap = '6px';
+                meta.style.minWidth = '0';
+
+                const nameEl = document.createElement('div');
+                nameEl.className = 'name';
+                nameEl.textContent = it.name;
+                nameEl.style.fontWeight = '600';
+                nameEl.style.color = '#fff';
+
+                const controls = document.createElement('div');
+                controls.style.display = 'flex';
+                controls.style.alignItems = 'center';
+                controls.style.gap = '8px';
+
+                const qtyWrap = document.createElement('div');
+                qtyWrap.style.display = 'inline-flex';
+                qtyWrap.style.alignItems = 'center';
+                qtyWrap.style.background = 'rgba(255,255,255,0.03)';
+                qtyWrap.style.border = '1px solid rgba(255,255,255,0.04)';
+                qtyWrap.style.padding = '6px';
+                qtyWrap.style.borderRadius = '999px';
+
+                const minus = document.createElement('button');
+                minus.textContent = '-';
+                minus.style.width = '28px';
+                minus.style.height = '28px';
+                minus.style.border = 'none';
+                minus.style.background = 'transparent';
+                minus.style.color = '#fff';
+                minus.style.fontWeight = '700';
+                minus.style.cursor = 'pointer';
+
+                const qty = document.createElement('div');
+                qty.textContent = String(it.qty || 1);
+                qty.style.minWidth = '18px';
+                qty.style.textAlign = 'center';
+                qty.style.color = '#fff';
+
+                const plus = document.createElement('button');
+                plus.textContent = '+';
+                plus.style.width = '28px';
+                plus.style.height = '28px';
+                plus.style.border = 'none';
+                plus.style.background = 'transparent';
+                plus.style.color = '#fff';
+                plus.style.fontWeight = '700';
+                plus.style.cursor = 'pointer';
+
+                qtyWrap.appendChild(minus);
+                qtyWrap.appendChild(qty);
+                qtyWrap.appendChild(plus);
+
+                const priceEl = document.createElement('div');
+                priceEl.className = 'price';
+                priceEl.textContent = formatPrice(it.price * (it.qty || 1));
+                priceEl.style.marginLeft = 'auto';
+                priceEl.style.fontWeight = '800';
+
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Eliminar';
+                removeBtn.style.border = 'none';
+                removeBtn.style.background = 'transparent';
+                removeBtn.style.color = '#9CA3AF';
+                removeBtn.style.cursor = 'pointer';
+                removeBtn.style.fontSize = '13px';
+
+                controls.appendChild(qtyWrap);
+                controls.appendChild(removeBtn);
+
+                meta.appendChild(nameEl);
+                meta.appendChild(controls);
+
+                row.appendChild(thumb);
+                row.appendChild(meta);
+                row.appendChild(priceEl);
+
+                // Events
+                minus.addEventListener('click', () => {
+                    if ((it.qty || 1) > 1) {
+                        it.qty = (it.qty || 1) - 1;
+                        qty.textContent = it.qty;
+                        priceEl.textContent = formatPrice(it.price * it.qty);
+                        save();
+                        updateCartUI();
+                    }
+                });
+
+                plus.addEventListener('click', () => {
+                    it.qty = (it.qty || 1) + 1;
+                    qty.textContent = it.qty;
+                    priceEl.textContent = formatPrice(it.price * it.qty);
+                    save();
+                    updateCartUI();
+                });
+
+                removeBtn.addEventListener('click', () => {
+                    cart.splice(idx, 1);
+                    save();
+                    updateCartUI();
+                    window.showToast(it.name + ' eliminado', 'info', 1800);
+                });
+
+                return row;
+            }
+
+            function updateCartUI() {
+                const total = cart.reduce((s, it) => s + (Number(it.price || 0) * (it.qty || 1)), 0);
+                const count = cart.reduce((s, it) => s + (it.qty || 1), 0);
+                if (cartBadge) { cartBadge.textContent = count; cartBadge.style.display = count ? 'inline-flex' : 'none'; }
+                if (cartBadgeNav) { cartBadgeNav.textContent = count; cartBadgeNav.style.display = count ? 'inline-flex' : 'none'; }
+
+                // update compact item count badge inside the sidebar
+                const cartCountBadgeEl = document.getElementById('cartCountBadge');
+                if (cartCountBadgeEl) {
+                    cartCountBadgeEl.textContent = count + (count === 1 ? ' item' : ' items');
+                }
+
+                cartItemsEl.innerHTML = '';
+                if (cart.length === 0) {
+                    const empty = document.createElement('div');
+                    empty.textContent = 'Tu carrito está vacío';
+                    empty.style.color = '#9CA3AF';
+                    empty.style.padding = '12px 0';
+                    cartItemsEl.appendChild(empty);
+                } else {
+                    cart.forEach((it, idx) => cartItemsEl.appendChild(renderItem(it, idx)));
+                }
+
+                // Ver si hay descuento aplicado (toggle simple 10%)
+                const discountApplied = (cartMeta && cartMeta.discount10) ? true : false;
+                const discountRate = discountApplied ? 0.10 : 0;
+                const discount = Math.round(total * discountRate * 100) / 100;
+                const finalTotal = Math.round((total - discount) * 100) / 100;
+
+                // Mostrar subtotal, descuento (si aplica) y total final
+                cartTotalEl.innerHTML = '';
+                const small = document.createElement('div');
+                small.style.fontSize = '13px';
+                small.style.color = '#9CA3AF';
+                small.style.marginBottom = '6px';
+                small.textContent = `Subtotal: ${formatPrice(total)}`;
+
+                cartTotalEl.appendChild(small);
+
+                const discountInfoEl = document.getElementById('discountInfo');
+                if (discount > 0) {
+                    const disc = document.createElement('div');
+                    disc.style.fontSize = '13px';
+                    disc.style.color = '#f59e0b';
+                    disc.style.fontWeight = '700';
+                    disc.style.marginBottom = '6px';
+                    disc.textContent = `Descuento ${Math.round(discountRate*100)}%: -${formatPrice(discount)}`;
+                    cartTotalEl.appendChild(disc);
+                    if (discountInfoEl) discountInfoEl.textContent = `Descuento aplicado: ${Math.round(discountRate*100)}%`;
+                } else {
+                    if (discountInfoEl) discountInfoEl.textContent = '';
+                }
+
+                const final = document.createElement('div');
+                final.style.fontWeight = '900';
+                final.style.color = '#fff';
+                final.textContent = formatPrice(finalTotal);
+                cartTotalEl.appendChild(final);
+            }
+
+            function animateAddToCart(fromEl, imgSrc) {
+                try {
+                    const fromRect = fromEl.getBoundingClientRect();
+                    const visibleBtn = getVisibleCartToggle();
+                    const toRect = visibleBtn ? visibleBtn.getBoundingClientRect() : { left: window.innerWidth - 40, top: 40, width: 24, height: 24 };
+                    flyElm.style.display = 'block';
+                    flyElm.style.left = (fromRect.left + fromRect.width / 2) + 'px';
+                    flyElm.style.top = (fromRect.top + fromRect.height / 2) + 'px';
+                    flyElm.style.opacity = '1';
+                    flyElm.style.width = '44px';
+                    flyElm.style.height = '44px';
+                    flyElm.style.borderRadius = '10px';
+                    flyElm.style.background = 'transparent';
+                    flyElm.innerHTML = `<img src="${imgSrc || 'https://via.placeholder.com/120?text=img'}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+                    // Force reflow
+                    flyElm.getBoundingClientRect();
+                    flyElm.style.transition = 'transform 600ms cubic-bezier(.2,.9,.3,1), opacity 600ms';
+                    flyElm.style.transform = `translate(${toRect.left + toRect.width/2 - (fromRect.left + fromRect.width/2)}px, ${toRect.top + toRect.height/2 - (fromRect.top + fromRect.height/2)}px) scale(0.2)`;
+                    flyElm.style.opacity = '0.0';
+                    setTimeout(() => {
+                        flyElm.style.display = 'none';
+                        flyElm.style.transition = '';
+                        flyElm.style.transform = 'translate(-50%,-50%) scale(1)';
+                        flyElm.innerHTML = '';
+                        flyElm.style.width = '';
+                        flyElm.style.height = '';
+                        flyElm.style.borderRadius = '';
+                        flyElm.style.background = '';
+                    }, 700);
+                } catch (e) { console.warn('animateAddToCart failed', e); }
+            }
+
+            function findItemIndex(name) {
+                return cart.findIndex(i => i.name === name);
+            }
+
+            function addToCart(name, price, fromEl, image) {
+                const idx = findItemIndex(name);
+                if (idx >= 0) {
+                    cart[idx].qty = (cart[idx].qty || 1) + 1;
+                } else {
+                    cart.push({ name, price: Number(price || 0), qty: 1, image: image || '' });
+                }
+                save();
+                animateAddToCart(fromEl, image);
+                updateCartUI();
+                window.showToast(`${name} añadido al carrito`, 'success', 1800);
+            }
+
+            // Expose helper to add product by name (used by chatbot)
+            window.__daniCartAdd = function(name) {
+                const buttons = Array.from(document.querySelectorAll('.btn-add-to-cart'));
+                const found = buttons.find(b => (b.getAttribute('data-product-name')||'').toLowerCase() === (name||'').toLowerCase());
+                if (found) { found.click(); return true; }
+                // try partial match
+                const partial = buttons.find(b => (b.getAttribute('data-product-name')||'').toLowerCase().includes((name||'').toLowerCase()));
+                if (partial) { partial.click(); return true; }
+                return false;
+            };
+
+            function openCart() {
+                cartSidebar.classList.add('open');
+                cartSidebar.setAttribute('aria-hidden', 'false');
+                // mark toggles as expanded for accessibility
+                try {
+                    document.querySelectorAll('.cart-toggle, #cartButton').forEach(t => t && t.setAttribute('aria-expanded', 'true'));
+                } catch (e) {}
+                // move focus for accessibility
+                try { cartSidebar.querySelector('button, [tabindex]')?.focus(); } catch (e) {}
+            }
+
+            function closeCart() {
+                cartSidebar.classList.remove('open');
+                cartSidebar.setAttribute('aria-hidden', 'true');
+                try {
+                    document.querySelectorAll('.cart-toggle, #cartButton').forEach(t => t && t.setAttribute('aria-expanded', 'false'));
+                } catch (e) {}
+            }
+
+            document.querySelectorAll('.btn-add-to-cart').forEach(btn => {
+                // prevent double-binding
+                if (btn.dataset.cartBound) return;
+                btn.dataset.cartBound = '1';
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const name = btn.getAttribute('data-product-name') || 'Producto';
+                    const price = btn.getAttribute('data-product-price') || '0';
+                    const image = btn.getAttribute('data-product-image') || '';
+                    addToCart(name, price, btn, image);
+                });
+            });
+
+            // Open cart from any toggle (nav or floating)
+            document.querySelectorAll('.cart-toggle, #cartButton').forEach(cb => {
+                if (!cb) return;
+                cb.addEventListener('click', (e) => { e.preventDefault(); openCart(); });
+            });
+
+            document.getElementById('closeCart').addEventListener('click', closeCart);
+            document.getElementById('continueShopping').addEventListener('click', closeCart);
+
+            // Vaciar carrito
+            const clearBtn = document.getElementById('clearCart');
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    if (!cart || cart.length === 0) { window.showToast('El carrito ya está vacío', 'info'); return; }
+                    cart = [];
+                    cartMeta = {};
+                    save();
+                    updateCartUI();
+                    window.showToast('Carrito vaciado', 'info');
+                });
+            }
+
+            
+
+            // Simple discount toggle (10%)
+            const applyDiscountBtn = document.getElementById('applyDiscountBtn');
+            const discountInfoElInit = document.getElementById('discountInfo');
+
+            function refreshDiscountUI() {
+                if (cartMeta && cartMeta.discount10) {
+                    if (applyDiscountBtn) applyDiscountBtn.textContent = 'Quitar 10%';
+                    if (discountInfoElInit) discountInfoElInit.textContent = 'Descuento del 10% aplicado';
+                } else {
+                    if (applyDiscountBtn) applyDiscountBtn.textContent = 'Aplicar 10%';
+                    if (discountInfoElInit) discountInfoElInit.textContent = '';
+                }
+            }
+
+            if (applyDiscountBtn) {
+                applyDiscountBtn.addEventListener('click', () => {
+                    cartMeta = cartMeta || {};
+                    cartMeta.discount10 = !cartMeta.discount10;
+                    save();
+                    updateCartUI();
+                    refreshDiscountUI();
+                    window.showToast(cartMeta.discount10 ? 'Descuento aplicado' : 'Descuento quitado', 'info');
+                });
+            }
+
+            // initialize discount UI
+            refreshDiscountUI();
+
+            document.getElementById('checkoutBtn').addEventListener('click', () => {
+                const count = cart.reduce((s, it) => s + (it.qty || 1), 0);
+                if (count === 0) {
+                    window.showToast('Tu carrito está vacío', 'info');
+                    return;
+                }
+
+                // Build product list for asunto
+                const productList = cart.map(it => `${it.name}${it.qty && it.qty > 1 ? ' x' + it.qty : ''}${it.price ? ` (${formatPrice(it.price)})` : ''}`).join(', ');
+                // calcular total y descuento (si aplica) para incluir en el asunto
+                const total = cart.reduce((s, it) => s + (Number(it.price || 0) * (it.qty || 1)), 0);
+                const discountRateCheckout = (cartMeta && cartMeta.discount10) ? 0.10 : 0;
+                const discount = Math.round(total * discountRateCheckout * 100) / 100;
+                const finalTotal = Math.round((total - discount) * 100) / 100;
+
+                const asuntoInput = document.getElementById('contact-asunto');
+                if (asuntoInput) {
+                    asuntoInput.value = `Me interesa: ${productList} — Total${discount ? ` con ${Math.round(discountRateCheckout*100)}% descuento` : ''}: ${formatPrice(finalTotal)}`;
+                }
+
+                closeCart();
+                // Scroll to contact form
+                const contactSection = document.querySelector('#contacto');
+                if (contactSection) {
+                    const headerOffset = 80;
+                    const elementPosition = contactSection.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    window.showToast('Formulario rellenado. Completa tus datos para enviar.', 'info', 3500);
+                }
+            });
+
+            // initialize
+            load();
+            updateCartUI();
+        })();
+
+        // Chat widget logic removed per user request
+
+        // Ensure hero buttons with data-target scroll correctly
+        document.querySelectorAll('[data-target]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sel = btn.getAttribute('data-target');
+                const target = document.querySelector(sel);
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+
+        console.log('[v0] Sitio web Daniii cargado con todas las funcionalidades activas');
+    </script>
+</body>
+</html>
