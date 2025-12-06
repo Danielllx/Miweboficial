@@ -670,7 +670,7 @@
     <section id="inicio" class="relative min-h-screen flex items-center justify-center hero-gradient grid-pattern pt-20">
         <div class="max-w-7xl mx-auto px-6 py-20 text-center">
             <div class="inline-block mb-6 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-gray-300">
-                ✨ Descuento Noviembre 10% 
+                ✨ Descuento Navidad 10% 
             </div>
             <h1 class="section-title gradient-text mb-6 text-balance">
                 Hacemos que tu idea tenga flow digital
@@ -1489,28 +1489,27 @@ Reúne todo en un solo link y deja que te descubran.
                         // He usado imports modulares desde el CDN. Tu firebaseConfig fue pegado arriba en el archivo.
                         (function () {
                                 // Primero, insertar el script de reCAPTCHA (site key proporcionada por el usuario)
-                                const recaptchaSiteKey = '6LfadfkrAAAAAMzz_vpFFnyPA2JB1LNqVW0Uy3i2';
+                                const recaptchaSiteKey = '6LfCWCMsAAAAAEM6BF2k_GCEGBIzwahFpoRZmntm';
                                 const recaptchaScript = document.createElement('script');
                                 recaptchaScript.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`;
                                 recaptchaScript.async = true;
                                 recaptchaScript.defer = true;
                                 document.head.appendChild(recaptchaScript);
 
-                                // --- Helpers globales: toast + estilos + confetti loader + spinner ---
+                                
                                 (function setupUIHelpers() {
                                     if (window._uiHelpersInstalled) return;
 
-                                    // Inject toast & spinner styles
+                                   
                                     const s = document.createElement('style');
                                     s.textContent = '\n#global-toast-container{position:fixed;right:0;left:0;bottom:24px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:99999;pointer-events:none}\n.global-toast{pointer-events:auto;min-width:220px;max-width:420px;padding:12px 16px;border-radius:12px;color:#fff;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,0.5);opacity:0;transform:translateY(10px);transition:all .28s cubic-bezier(.2,.9,.3,1)}\n.global-toast.show{opacity:1;transform:translateY(0)}\n.global-toast.info{background:linear-gradient(90deg,#6b7280,#111827)}\n.global-toast.success{background:linear-gradient(90deg,#10b981,#059669)}\n.global-toast.error{background:linear-gradient(90deg,#ef4444,#b91c1c)}\n.btn-spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,0.25);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-right:8px}\n@keyframes spin{to{transform:rotate(360deg)}}\n';
                                     document.head.appendChild(s);
 
-                                    // Toast container
                                     const container = document.createElement('div');
                                     container.id = 'global-toast-container';
                                     document.body.appendChild(container);
 
-                                    // showToast helper
+                                  
                                     window.showToast = function (message, type = 'info', ms = 3500) {
                                         try {
                                             const toast = document.createElement('div');
@@ -1527,19 +1526,19 @@ Reúne todo en un solo link y deja que te descubran.
                                         } catch (e) { console.warn('showToast failed', e); }
                                     };
 
-                                    // Load canvas-confetti for celebratory effect
+                                   
                                     const confettiScript = document.createElement('script');
                                     confettiScript.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
                                     confettiScript.async = true;
                                     confettiScript.onload = () => {
-                                        // window.confetti becomes available
+                                       
                                     };
                                     document.head.appendChild(confettiScript);
 
                                     window._uiHelpersInstalled = true;
                                 })();
-
-                                // Luego, el módulo que inicializa Firebase y usa grecaptcha antes de enviar
+enviar
+                                
                                 const moduleScript = document.createElement('script');
                                 moduleScript.type = 'module';
                                 moduleScript.textContent = `
